@@ -22,7 +22,6 @@ D:\AIAgent\AIEduTrack\AIEduTrack\obj\Debug\net10.0\rjsmcshtml.dswa.cache.json
 D:\AIAgent\AIEduTrack\AIEduTrack\obj\Debug\net10.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 D:\AIAgent\AIEduTrack\AIEduTrack\obj\Debug\net10.0\scopedcss\bundle\AIEduTrack.styles.css
 D:\AIAgent\AIEduTrack\AIEduTrack\obj\Debug\net10.0\scopedcss\projectbundle\AIEduTrack.bundle.scp.css
-D:\AIAgent\AIEduTrack\AIEduTrack\obj\Debug\net10.0\compressed\mym5fzwyvm-{0}-b9sayid5wm-b9sayid5wm.gz
 D:\AIAgent\AIEduTrack\AIEduTrack\obj\Debug\net10.0\compressed\lm0n1zu6ww-{0}-61n19gt1b8-61n19gt1b8.gz
 D:\AIAgent\AIEduTrack\AIEduTrack\obj\Debug\net10.0\compressed\cg9zrowhzz-{0}-xtxxf3hu2r-xtxxf3hu2r.gz
 D:\AIAgent\AIEduTrack\AIEduTrack\obj\Debug\net10.0\compressed\1z1vwuy8yp-{0}-bqjiyaj88i-bqjiyaj88i.gz
@@ -97,3 +96,5 @@ D:\AIAgent\AIEduTrack\AIEduTrack\obj\Debug\net10.0\refint\AIEduTrack.dll
 D:\AIAgent\AIEduTrack\AIEduTrack\obj\Debug\net10.0\AIEduTrack.pdb
 D:\AIAgent\AIEduTrack\AIEduTrack\obj\Debug\net10.0\AIEduTrack.genruntimeconfig.cache
 D:\AIAgent\AIEduTrack\AIEduTrack\obj\Debug\net10.0\ref\AIEduTrack.dll
+D:\AIAgent\AIEduTrack\AIEduTrack\obj\Debug\net10.0\compressed\mym5fzwyvm-{0}-c7ty4ooznp-c7ty4ooznp.gz
+D:\AIAgent\AIEduTrack\AIEduTrack\bin\Debug\net10.0\llm_providers.json

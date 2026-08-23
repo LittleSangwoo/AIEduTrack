@@ -1,0 +1,215 @@
+﻿@{
+    ViewData["Title"] = "Аналитика и Бенчмаркинг";
+}
+
+<style>
+    /* Стили для таблицы */
+    .custom-table {
+        background: transparent;
+        --bs-table-bg: transparent;
+        --bs-table-color: #cbd5e1;
+        --bs-table-hover-bg: rgba(59, 130, 246, 0.05);
+        --bs-table-border-color: rgba(255, 255, 255, 0.05);
+    }
+    .custom-table thead th {
+        background: rgba(15, 23, 42, 0.6);
+        color: #94a3b8;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .custom-table tbody td {
+        padding: 1.2rem 0.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* Кнопка выгрузки в Excel */
+    .btn-excel {
+        background: rgba(16, 185, 129, 0.1);
+        color: #10b981;
+        border: 1px solid #10b981;
+        transition: all 0.3s ease;
+    }
+    .btn-excel:hover {
+        background: #10b981;
+        color: #fff;
+        box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+        transform: translateY(-2px);
+    }
+
+    /* Прогресс бар */
+    .dark-progress {
+        background-color: #0f172a;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    /* Анимация появления строк */
+    .row-fade-in {
+        animation: fadeInRow 0.6s ease forwards;
+    }
+    @@keyframes fadeInRow {
+        from { opacity: 0; transform: translateY(10px); background: rgba(59, 130, 246, 0.2); }
+        to { opacity: 1; transform: translateY(0); background: transparent; }
+    }
+</style>
+
+<div class="dark-dashboard container-fluid py-4">
+    <!-- Заголовок и элементы управления -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="section-title mb-0"><i class="bi bi-bar-chart-line"></i> Сравнение ИИ-провайдеров</h3>
+        <div class="d-flex gap-3">
+            <button id="runBenchmarkBtn" class="btn btn-glow fw-bold px-4">
+                <i class="bi bi-play-fill"></i> Запустить бенчмарк (20 профилей)
+            </button>
+            <button id="exportExcelBtn" class="btn btn-excel fw-bold px-4">
+                <i class="bi bi-file-earmark-excel"></i> Выгрузить в Excel
+            </button>
+        </div>
+    </div>
+
+    <!-- Панель статуса (Скрыта по умолчанию) -->
+    <div id="benchmarkProgress" class="glass-panel p-4 mb-4 d-none">
+        <h6 class="text-light mb-3">Выполнение тестирования... <span id="progressText">0/20</span></h6>
+        <div class="progress dark-progress" style="height: 10px;">
+            <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: 0%"></div>
+        </div>
+    </div>
+
+    <!-- Таблица результатов -->
+    <div class="glass-panel p-0 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table table-dark table-hover custom-table mb-0 align-middle">
+                <thead>
+                    <tr>
+                        <th class="ps-4">ИИ-Движок</th>
+                        <th>Тип модели</th>
+                        <th>Среднее время (Latency)</th>
+                        <th>Валидность JSON</th>
+                        <th>Без галлюцинаций (0% ошибок)</th>
+                        <th class="pe-4">Релевантность (1-10)</th>
+                    </tr>
+                </thead>
+                <tbody id="benchmarkTableBody">
+                    <!-- Заглушки для первоначального отображения -->
+                    <tr class="opacity-50">
+                        <td class="ps-4"><span class="fs-5 me-2">🇷🇺</span> GigaChat</td>
+                        <td><span class="badge bg-secondary">Отечественная</span></td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="pe-4">—</td>
+                    </tr>
+                    <tr class="opacity-50">
+                        <td class="ps-4"><span class="fs-5 me-2">🌐</span> Groq (Llama 3)</td>
+                        <td><span class="badge bg-secondary">Зарубежная</span></td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="pe-4">—</td>
+                    </tr>
+                    <tr class="opacity-50">
+                        <td class="ps-4"><span class="fs-5 me-2">💻</span> Ollama Local</td>
+                        <td><span class="badge bg-secondary">Локальная</span></td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="pe-4">—</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const runBenchmarkBtn = document.getElementById('runBenchmarkBtn');
+        const exportExcelBtn = document.getElementById('exportExcelBtn');
+        const benchmarkProgress = document.getElementById('benchmarkProgress');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        const tableBody = document.getElementById('benchmarkTableBody');
+
+        // Мок-данные результатов тестирования (Для демонстрации)
+        const benchmarkResults = [
+            { icon: "🇷🇺", name: "GigaChat", type: "Отечественная", typeClass: "bg-success", latency: "2.1 сек", valid: "100%", noHallucinations: "100%", score: "9.2" },
+            { icon: "🌐", name: "Groq (Llama 3)", type: "Зарубежная", typeClass: "bg-primary", latency: "0.8 сек", valid: "100%", noHallucinations: "100%", score: "9.5" },
+            { icon: "💻", name: "Ollama Local", type: "Локальная", typeClass: "bg-warning text-dark", latency: "4.5 сек", valid: "95%", noHallucinations: "100%", score: "8.7" }
+        ];
+
+        // Запуск бенчмарка
+        runBenchmarkBtn.addEventListener('click', function () {
+            runBenchmarkBtn.disabled = true;
+            exportExcelBtn.disabled = true;
+            benchmarkProgress.classList.remove('d-none');
+            tableBody.innerHTML = ''; // Очищаем таблицу
+
+            let currentProfile = 0;
+            const totalProfiles = 20;
+
+            // Имитация процесса тестирования
+            const interval = setInterval(() => {
+                currentProfile++;
+                const percentage = (currentProfile / totalProfiles) * 100;
+                
+                progressBar.style.width = percentage + '%';
+                progressText.innerText = `${currentProfile}/${totalProfiles}`;
+
+                if (currentProfile >= totalProfiles) {
+                    clearInterval(interval);
+                    finishBenchmark();
+                }
+            }, 150); // Скорость заполнения прогресс бара
+        });
+
+        function finishBenchmark() {
+            setTimeout(() => {
+                benchmarkProgress.classList.add('d-none');
+                runBenchmarkBtn.disabled = false;
+                exportExcelBtn.disabled = false;
+                runBenchmarkBtn.innerHTML = '<i class="bi bi-arrow-clockwise"></i> Повторить тест';
+
+                // Отрисовываем результаты
+                benchmarkResults.forEach((res, index) => {
+                    const delay = index * 0.2; // Каскадная анимация
+                    const tr = document.createElement('tr');
+                    tr.className = 'row-fade-in';
+                    tr.style.animationDelay = `${delay}s`;
+                    tr.innerHTML = `
+                        <td class="ps-4 text-white fw-bold"><span class="fs-5 me-2">${res.icon}</span> ${res.name}</td>
+                        <td><span class="badge ${res.typeClass}">${res.type}</span></td>
+                        <td><i class="bi bi-stopwatch text-muted"></i> ${res.latency}</td>
+                        <td class="text-success"><i class="bi bi-check-circle-fill"></i> ${res.valid}</td>
+                        <td class="text-success"><i class="bi bi-shield-check"></i> ${res.noHallucinations}</td>
+                        <td class="pe-4 fw-bold text-info"><i class="bi bi-star-fill"></i> ${res.score}</td>
+                    `;
+                    tableBody.appendChild(tr);
+                });
+            }, 500);
+        }
+
+        // Имитация выгрузки в Excel
+        exportExcelBtn.addEventListener('click', function () {
+            const originalText = this.innerHTML;
+            this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Формирование...';
+            this.disabled = true;
+
+            setTimeout(() => {
+                this.innerHTML = '<i class="bi bi-check-lg"></i> Файл скачан';
+                this.classList.replace('btn-excel', 'btn-success');
+                
+                // Имитация скачивания файла (в реальности тут будет window.location.href = '/Report/DownloadExcel')
+                setTimeout(() => {
+                    this.innerHTML = originalText;
+                    this.classList.replace('btn-success', 'btn-excel');
+                    this.disabled = false;
+                }, 3000);
+            }, 1500);
+        });
+    });
+</script>

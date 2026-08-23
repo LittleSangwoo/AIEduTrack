@@ -39,7 +39,7 @@ namespace AIEduTrack.Services
             var catalog = _repository.GetCatalog();
 
             var context = await _analyzer.AnalyzeProfileAsync(profile, catalog);
-            var draft = await _curator.DraftTrajectoryAsync(context, llm);
+            var draft = await _curator.DraftTrajectoryAsync(context, llm, catalog);
             var validSteps = _validator.Validate(draft, profile, catalog);
             var finalSteps = await _explainer.GenerateJustificationsAsync(validSteps, profile, llm);
 

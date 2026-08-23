@@ -2,22 +2,38 @@
 {
     public class LLMFactory : ILLMFactory
     {
-        private readonly IEnumerable<ILLMClient> _clients;
+        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ILlmSettingsService _settingsService;
 
-        public LLMFactory(IEnumerable<ILLMClient> clients)
+        public LLMFactory(IHttpClientFactory httpClientFactory, ILlmSettingsService settingsService)
         {
-            _clients = clients;
+            _httpClientFactory = httpClientFactory;
+            _settingsService = settingsService;
         }
 
-        public ILLMClient GetClient(string providerType)
+        public ILLMClient GetClient(string providerName)
         {
-            return providerType.ToLower() switch
-            {
-                "russian" => _clients.First(c => c is GigaChatClient),
-                "foreign" => _clients.First(c => c is GroqClient),
-                "local" => _clients.First(c => c is OllamaClient),
-                _ => throw new ArgumentException("Неизвестный провайдер")
-            };
+            // Ищем провайдера в json по имени (например, "ollama local1" или "gigachatApi")
+            var config = _settingsService.GetProviders()
+                .FirstOrDefault(p => p.Name.Equals(providerName, StringComparison.OrdinalIgnoreCase));
+
+            if (config == null)
+                throw new ArgumentException($"Провайдер с именем '{providerName}' не найден в настройках.");
+
+            // Создаем HTTP клиент
+            // Для GigaChat мы используем специальный клиент без проверки SSL-сертификатов Минцифры
+            var httpClient = config.AuthType == "GigaChat"
+                ? _httpClientFactory.CreateClient("GigaChatClient")
+                : _httpClientFactory.CreateClient();
+
+            // Возвращаем нужный класс в зависимости от типа авторизации
+            if (config.AuthType == "OpenAI")
+                return new OpenAiCompatibleClient(httpClient, config);
+
+            if (config.AuthType == "GigaChat")
+                return new GigaChatClient(httpClient, config);
+
+            throw new ArgumentException($"Неизвестный AuthType: {config.AuthType}");
         }
     }
 }

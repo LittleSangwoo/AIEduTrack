@@ -9,33 +9,46 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/AIEduTrack.styles.css" asp-append-version="true" />
 </head>
+
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">AIEduTrack</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+            <nav class="navbar navbar-expand-lg glass-navbar mb-4">
+                <div class="container-fluid px-4">
+                    <a class="navbar-brand text-white fw-bold" asp-controller="Home" asp-action="Index">
+                        <i class="bi bi-robot text-primary"></i> AI-EduTrack
+                    </a>
+                    <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-toggle="target=" #navbarNav">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto gap-2">
+                            <li class="nav-item">
+                                <a class="nav-link nav-btn" asp-controller="Home" asp-action="Index">
+                                    <i class="bi bi-diagram-3"></i> Конструктор
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-btn" asp-controller="Dashboard" asp-action="Analytics">
+                                    <i class="bi bi-bar-chart-line"></i> Аналитика
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-btn" asp-controller="Settings" asp-action="Index">
+                                    <i class="bi bi-gear"></i> Настройки
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+            </nav>
+        </header>
+
+        <div class="container-fluid">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
 
     <footer class="border-top footer text-muted">
         <div class="container">
