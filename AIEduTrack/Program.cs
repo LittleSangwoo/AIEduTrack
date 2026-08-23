@@ -1,4 +1,8 @@
+using AIEduTrack.Data;
+using AIEduTrack.Services;
+using AIEduTrack.Services.Agents;
 using AIEduTrack.Services.LLM;
+using AIEduTrack.Services.Report;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +22,14 @@ builder.Services.AddHttpClient("GigaChatClient")
 // Регистрация наших сервисов
 builder.Services.AddScoped<ILLMFactory, AIEduTrack.Services.LLM.LLMFactory>();
 builder.Services.AddScoped<ILlmSettingsService, AIEduTrack.Services.LLM.LlmSettingsService>();
+
+builder.Services.AddScoped<TrajectoryOrchestrator>();
+builder.Services.AddScoped<IContextAnalyzerAgent, ContextAnalyzerAgent>();
+builder.Services.AddScoped<ITrajectoryCuratorAgent, TrajectoryCuratorAgent>();
+builder.Services.AddScoped<IValidatorAgent, ValidatorAgent>();
+builder.Services.AddScoped<IExplainerAgent, ExplainerAgent>();
+builder.Services.AddScoped<IBenchmarkService, BenchmarkService>();
+builder.Services.AddSingleton<IDataRepository, ExcelDataRepository>();
 
 var app = builder.Build();
 

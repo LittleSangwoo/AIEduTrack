@@ -7,6 +7,14 @@
         public string Department { get; set; }
         public string ModelUsed { get; set; }
         public double ExecutionTimeMs { get; set; }
+
+        // ДОБАВЛЯЕМ МЕТРИКИ ДЛЯ БЕНЧМАРКА:
+        public int DraftStepsCount { get; set; } // Сколько шагов придумала LLM
+        public int HallucinationsFiltered { get; set; } // Сколько выдумано/не найдено в каталоге
+        public int AlreadyPassedFiltered { get; set; } // Сколько отсеяно пройденных
+
+        public string RawResponse { get; set; } = string.Empty;
+
         public List<TrajectoryStepDto> Steps { get; set; } = new();
     }
     public class TrajectoryStepDto

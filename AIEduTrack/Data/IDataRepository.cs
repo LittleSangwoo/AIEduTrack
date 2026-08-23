@@ -7,12 +7,13 @@ namespace AIEduTrack.Data
     {
         UserProfile GetProfile(string userId);
         List<Course> GetAvailableCourses();
+        
+        // ДОБАВЛЯЕМ ЭТУ СТРОКУ:
+        List<UserProfile> GetAllUsers();
+
+        // ДОБАВЛЯЕМ МЕТОД ДЛЯ ПАРСИНГА ИЗ UI:
+        void UpdateData(Stream historyStream, Stream catalogStream);
     }
 
-    public interface IMockDataRepository : IDataRepository
-    {
-        // Специфичные методы для тестовой заглушки, если понадобятся
-        List<Course> GetCatalog();
-        UserProfile GetUserProfile(string userId);
-    }
+    
 }

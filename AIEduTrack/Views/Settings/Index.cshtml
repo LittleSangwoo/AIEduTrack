@@ -1,0 +1,448 @@
+﻿@{
+    ViewData["Title"] = "Настройки ИИ";
+}
+
+
+<style>
+    :root {
+        --bg-deep: #0a0e1a;
+        --bg-panel: #141c2e;
+        --bg-panel-2: #1a2338;
+        --bg-input: #1c2740;
+        --border-soft: rgba(148, 163, 184, 0.14);
+        --border-strong: rgba(148, 163, 184, 0.28);
+        --accent: #3b82f6;
+        --accent-bright: #60a5fa;
+        --accent-soft: rgba(59, 130, 246, 0.16);
+        --text-primary: #f1f5f9;
+        --text-secondary: #b6c2d9;
+        --text-tertiary: #8899b3;
+        --success: #22c55e;
+        --radius-lg: 16px;
+        --radius-md: 12px;
+        --radius-sm: 8px;
+    }
+
+    html, body {
+        color-scheme: dark; /* нативные select/input рендерятся в тёмной теме, а не белым на белом */
+    }
+
+    body {
+        background:
+            radial-gradient(circle at 12% 0%, rgba(59, 130, 246, 0.10), transparent 42%),
+            radial-gradient(circle at 88% 8%, rgba(34, 197, 94, 0.06), transparent 40%),
+            var(--bg-deep);
+        color: var(--text-primary);
+        font-family: 'Segoe UI', Inter, Roboto, sans-serif;
+    }
+
+    /* Заголовок страницы */
+    .page-header {
+        margin-bottom: 1.75rem;
+    }
+    .page-header .eyebrow {
+        color: var(--accent-bright);
+        font-size: 0.78rem;
+        font-weight: 600;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+    }
+    .page-header h1 {
+        color: var(--text-primary);
+        font-weight: 700;
+        font-size: 1.9rem;
+        margin: 0.25rem 0 0.35rem;
+    }
+    .page-header p {
+        color: var(--text-secondary);
+        margin: 0;
+    }
+
+    /* Карточки: непрозрачный фон с чёткой рамкой — фон и текст больше не сливаются */
+    .glass-panel {
+        background: var(--bg-panel);
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    .section-title {
+        color: var(--text-primary);
+        font-weight: 600;
+        font-size: 1.05rem;
+        letter-spacing: 0.3px;
+        display: flex;
+        align-items: center;
+        gap: 0.55rem;
+    }
+    .section-title i {
+        color: var(--accent-bright);
+    }
+
+    /* Единый класс для второстепенного текста — контрастнее дефолтного Bootstrap text-muted на тёмном фоне */
+    .text-muted-custom {
+        color: var(--text-secondary) !important;
+    }
+    .text-faint {
+        color: var(--text-tertiary) !important;
+    }
+
+    .form-label {
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        font-weight: 600;
+        letter-spacing: 0.2px;
+        margin-bottom: 0.4rem;
+    }
+
+    /* Инпуты и Селекты */
+    .dark-input {
+        background-color: var(--bg-input);
+        border: 1px solid var(--border-strong);
+        color: var(--text-primary);
+        border-radius: var(--radius-sm);
+    }
+    .dark-input::placeholder {
+        color: var(--text-tertiary);
+    }
+    .dark-input:focus {
+        background-color: var(--bg-input);
+        color: #fff;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 0.2rem var(--accent-soft);
+    }
+    .dark-input option {
+        background-color: var(--bg-panel-2);
+        color: var(--text-primary);
+    }
+
+    /* Карточка профиля */
+    .profile-card {
+        background: linear-gradient(145deg, #1a2338, #101828);
+        border: 1px solid var(--border-soft);
+        border-left: 4px solid var(--accent);
+        border-radius: var(--radius-sm);
+        animation: slideDown 0.4s ease forwards;
+    }
+    .profile-card .badge {
+        font-weight: 600;
+        letter-spacing: 0.3px;
+    }
+
+    /* Радиокнопки выбора движка */
+    .engine-option input {
+        display: none;
+    }
+    .engine-card {
+        display: flex;
+        align-items: center;
+        padding: 12px 16px;
+        background: var(--bg-panel-2);
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+    }
+    .engine-option input:checked + .engine-card {
+        border-color: var(--accent);
+        background: var(--accent-soft);
+        box-shadow: 0 0 15px rgba(59, 130, 246, 0.25);
+    }
+    .engine-card:hover {
+        border-color: var(--border-strong);
+    }
+    .engine-card h6 {
+        color: var(--text-primary);
+    }
+
+    /* Кнопка запуска генерации */
+    .btn-glow {
+        background: linear-gradient(90deg, #2563eb, #3b82f6);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius-sm);
+        transition: all 0.3s ease;
+        letter-spacing: 0.3px;
+    }
+    .btn-glow:hover:not(:disabled) {
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.55);
+        transform: translateY(-2px);
+        color: #fff;
+    }
+    .btn-glow:disabled {
+        background: #26314a;
+        color: #64748b;
+    }
+
+    /* Кнопка загрузки данных */
+    .btn-outline-custom {
+        background: transparent;
+        border: 1px solid var(--border-strong);
+        color: var(--text-secondary);
+        border-radius: var(--radius-sm);
+        font-weight: 600;
+        transition: all 0.2s ease;
+    }
+    .btn-outline-custom:hover {
+        border-color: var(--accent-bright);
+        background: var(--accent-soft);
+        color: #fff;
+    }
+
+    /* Таймлайн траектории */
+    .timeline-container {
+        position: relative;
+        padding-left: 28px;
+    }
+    .timeline-container::before {
+        content: "";
+        position: absolute;
+        left: 9px;
+        top: 6px;
+        bottom: 6px;
+        width: 2px;
+        background: linear-gradient(to bottom, var(--accent), rgba(59, 130, 246, 0.05));
+    }
+    .timeline-item {
+        position: relative;
+        margin-bottom: 1.25rem;
+        opacity: 0;
+        animation: fadeInRight 0.5s ease forwards;
+    }
+    .timeline-item:last-child {
+        margin-bottom: 0;
+    }
+    .timeline-marker {
+        position: absolute;
+        left: -28px;
+        top: 18px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--accent-bright);
+        box-shadow: 0 0 0 4px var(--bg-deep), 0 0 12px rgba(96, 165, 250, 0.7);
+    }
+
+    /* Карточки курсов в таймлайне */
+    .course-card {
+        background: var(--bg-panel-2);
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius-md);
+        padding: 18px;
+        transition: all 0.3s ease;
+    }
+    .course-card:hover {
+        border-color: var(--accent-bright);
+        background: #1e2a45;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+    .course-card h5 {
+        color: var(--text-primary);
+        font-size: 1.05rem;
+    }
+    .course-card p {
+        color: var(--text-secondary);
+    }
+    .justification-block {
+        background: rgba(0, 0, 0, 0.25);
+        border-left: 3px solid var(--success);
+        padding: 12px 15px;
+        border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+        font-size: 0.92rem;
+        color: var(--text-secondary);
+        line-height: 1.5;
+    }
+    .justification-block strong {
+        color: #6ee7b7;
+    }
+
+    /* Пустое состояние и лоадер */
+    #emptyState {
+        color: var(--text-tertiary);
+    }
+    #emptyState h5 {
+        color: var(--text-secondary);
+        font-weight: 600;
+    }
+
+    /* Анимации */
+    @@keyframes slideDown {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @@keyframes fadeInRight {
+        from { opacity: 0; transform: translateX(20px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+    .fade-pulse {
+        animation: pulse 1.5s infinite;
+    }
+    @@keyframes pulse {
+        0% { opacity: 0.6; }
+        50% { opacity: 1; }
+        100% { opacity: 0.6; }
+    }
+</style>
+
+<div class="container py-4" style="max-width: 1200px;">
+    <h2 class="hero-title mb-1">Редактор ИИ Провайдеров</h2>
+    <p class="hero-subtitle fw-normal mb-4 text-muted-custom">Настройка шлюзов, ключей и локальных моделей.</p>
+
+    <div class="row g-4">
+        <div class="col-lg-5">
+            <div class="glass-panel p-4 h-100">
+                <h5 class="hero-subtitle mb-4" id="formTitle">Новый интегратор</h5>
+                
+                <form id="providerForm" class="d-flex flex-column gap-3">
+                    <input type="hidden" id="pId" />
+                    
+                    <div>
+                        <label class="form-label">Название (для UI)</label>
+                        <input type="text" id="pName" class="form-control form-control-adaptive" placeholder="Например: my-custom-llama" required />
+                    </div>
+                    <div>
+                        <label class="form-label">Адрес шлюза API (Endpoint)</label>
+                        <input type="url" id="pApiUrl" class="form-control form-control-adaptive" placeholder="http://localhost:11434/v1/chat/completions" required />
+                    </div>
+                    <div>
+                        <label class="form-label">Имя целевой модели</label>
+                        <input type="text" id="pModelName" class="form-control form-control-adaptive" placeholder="llama3" required />
+                    </div>
+
+                    <div class="form-check form-switch py-2 d-flex align-items-center gap-2">
+                        <input class="form-check-input mt-0" type="checkbox" id="pIsLocal" onchange="toggleAuthFields()" style="width: 2.5em; height: 1.25em;">
+                        <label class="form-label mb-0" for="pIsLocal" style="cursor:pointer;">Локальная модель (Без ключа)</label>
+                    </div>
+
+                    <div id="authContainer" class="auth-container">
+                        <label class="form-label">Тип авторизации</label>
+                        <select id="authType" class="form-select form-select-adaptive mb-3" onchange="toggleAuthType()">
+                            <option value="OpenAI">Стандартный (Bearer Token / Api-Key)</option>
+                            <option value="GigaChat">Сбер GigaChat</option>
+                        </select>
+
+                        <div id="apiKeyGroup">
+                            <label class="form-label">Токен авторизации (API Key)</label>
+                            <input type="password" id="pApiKey" class="form-control form-control-adaptive" placeholder="Введите ключ" />
+                        </div>
+
+                        <div id="scopeGroup" class="hidden mt-3">
+                            <label class="form-label">Дополнительный параметр (Scope)</label>
+                            <input type="text" id="pScope" class="form-control form-control-adaptive mb-0" placeholder="GIGACHAT_API_PERS" />
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2 mt-4">
+                        <button type="button" class="btn btn-outline-secondary flex-grow-1" onclick="resetForm()">Очистить</button>
+                        <button type="submit" class="btn btn-primary btn-glow flex-grow-1">Сохранить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="col-lg-7">
+            <div class="glass-panel p-4 h-100">
+                <h5 class="hero-subtitle mb-4">Активные конфигурации</h5>
+                <div id="providersList" class="d-flex flex-column gap-3"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            loadProviders();
+            toggleAuthFields();
+        });
+
+        function toggleAuthFields() {
+            const isLocal = document.getElementById('pIsLocal').checked;
+            document.getElementById('authContainer').style.display = isLocal ? 'none' : 'block';
+        }
+
+        function toggleAuthType() {
+            const isGiga = document.getElementById('authType').value === 'GigaChat';
+            const scopeGroup = document.getElementById('scopeGroup');
+            isGiga ? scopeGroup.classList.remove('hidden') : scopeGroup.classList.add('hidden');
+        }
+
+        async function loadProviders() {
+            const response = await fetch('/api/settings/providers');
+            const providers = await response.json();
+            const list = document.getElementById('providersList');
+            list.innerHTML = '';
+
+            providers.forEach(p => {
+                list.innerHTML += `
+                    <div class="p-3 provider-item-card">
+                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
+                            <div>
+                                <h6 class="mb-1 hero-subtitle" style="font-size: 1.05rem;">
+                                    ${p.name} ${p.isLocal ? '<span class="badge bg-secondary ms-2" style="font-size: 0.7rem;">Local</span>' : ''}
+                                </h6>
+                                <div class="text-muted-custom mb-0" style="word-break: break-all; font-size: 0.85rem;">${p.baseUrl}</div>
+                                <div class="text-muted-custom mt-1" style="font-size: 0.85rem;">Модель: <span style="color: #e2e8f0;">${p.model}</span> | Тип: <span style="color: #e2e8f0;">${p.authType}</span></div>
+                            </div>
+                            <div class="d-flex gap-2 align-items-center">
+                                <button class="btn btn-sm btn-outline-info fw-medium px-3" onclick='editProvider(${JSON.stringify(p)})'>Изменить</button>
+                                <button class="btn btn-sm btn-outline-danger fw-medium px-3" onclick="deleteProvider('${p.id}')">Удалить</button>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        document.getElementById('providerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const provider = {
+                id: document.getElementById('pId').value,
+                name: document.getElementById('pName').value,
+                baseUrl: document.getElementById('pApiUrl').value,
+                model: document.getElementById('pModelName').value,
+                isLocal: document.getElementById('pIsLocal').checked,
+                authType: document.getElementById('authType').value,
+                apiKey: document.getElementById('pApiKey').value || "-",
+                scope: document.getElementById('pScope').value
+            };
+
+            await fetch('/api/settings/providers', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(provider)
+            });
+            resetForm();
+            loadProviders();
+        });
+
+        function editProvider(p) {
+            document.getElementById('formTitle').innerText = 'Редактирование интегратора';
+            document.getElementById('pId').value = p.id;
+            document.getElementById('pName').value = p.name;
+            document.getElementById('pApiUrl').value = p.baseUrl;
+            document.getElementById('pModelName').value = p.model;
+            document.getElementById('pIsLocal').checked = p.isLocal;
+            document.getElementById('pApiKey').value = p.apiKey === "-" ? "" : p.apiKey;
+            document.getElementById('pScope').value = p.scope || "";
+            document.getElementById('authType').value = p.authType || "OpenAI";
+            
+            toggleAuthFields();
+            toggleAuthType();
+        }
+
+        async function deleteProvider(id) {
+            if (!confirm('Точно удалить провайдера?')) return;
+            await fetch(`/api/settings/providers/${id}`, { method: 'DELETE' });
+            loadProviders();
+        }
+
+        function resetForm() {
+            document.getElementById('providerForm').reset();
+            document.getElementById('pId').value = '';
+            document.getElementById('formTitle').innerText = 'Новый интегратор';
+            document.getElementById('authType').value = 'OpenAI';
+            toggleAuthFields();
+            toggleAuthType();
+        }
+    </script>
+}

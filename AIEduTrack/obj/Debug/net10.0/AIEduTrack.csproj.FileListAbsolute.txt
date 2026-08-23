@@ -98,3 +98,13 @@ D:\AIAgent\AIEduTrack\AIEduTrack\obj\Debug\net10.0\AIEduTrack.genruntimeconfig.c
 D:\AIAgent\AIEduTrack\AIEduTrack\obj\Debug\net10.0\ref\AIEduTrack.dll
 D:\AIAgent\AIEduTrack\AIEduTrack\obj\Debug\net10.0\compressed\mym5fzwyvm-{0}-c7ty4ooznp-c7ty4ooznp.gz
 D:\AIAgent\AIEduTrack\AIEduTrack\bin\Debug\net10.0\llm_providers.json
+D:\AIAgent\AIEduTrack\AIEduTrack\bin\Debug\net10.0\ClosedXML.dll
+D:\AIAgent\AIEduTrack\AIEduTrack\bin\Debug\net10.0\ClosedXML.Parser.dll
+D:\AIAgent\AIEduTrack\AIEduTrack\bin\Debug\net10.0\DocumentFormat.OpenXml.dll
+D:\AIAgent\AIEduTrack\AIEduTrack\bin\Debug\net10.0\DocumentFormat.OpenXml.Framework.dll
+D:\AIAgent\AIEduTrack\AIEduTrack\bin\Debug\net10.0\ExcelNumberFormat.dll
+D:\AIAgent\AIEduTrack\AIEduTrack\bin\Debug\net10.0\RBush.dll
+D:\AIAgent\AIEduTrack\AIEduTrack\bin\Debug\net10.0\SixLabors.Fonts.dll
+D:\AIAgent\AIEduTrack\AIEduTrack\bin\Debug\net10.0\System.IO.Packaging.dll
+D:\AIAgent\AIEduTrack\AIEduTrack\obj\Debug\net10.0\AIEduTrack.csproj.AssemblyReference.cache
+D:\AIAgent\AIEduTrack\AIEduTrack\obj\Debug\net10.0\AIEduTrack.csproj.Up2Date

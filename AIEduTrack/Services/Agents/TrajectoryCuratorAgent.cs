@@ -50,40 +50,35 @@ namespace AIEduTrack.Services.Agents
 
         private List<TrajectoryStepDto> ParseJsonSafely(string responseText)
         {
+            // Выводим сырой ответ в консоль Visual Studio, чтобы видеть, что придумал ИИ
+            Console.WriteLine($"\n=== СЫРОЙ ОТВЕТ LLM ===\n{responseText}\n=======================\n");
+            System.Diagnostics.Debug.WriteLine($"\n=== СЫРОЙ ОТВЕТ LLM ===\n{responseText}\n=======================\n");
+
             try
             {
-                // Эвристическая очистка: некоторые LLM игнорируют запрет на Markdown
-                var cleanJson = responseText.Trim();
-
-                if (cleanJson.StartsWith("```json", StringComparison.OrdinalIgnoreCase))
-                {
-                    cleanJson = cleanJson.Substring(7);
-                }
-                if (cleanJson.StartsWith("```", StringComparison.OrdinalIgnoreCase))
-                {
-                    cleanJson = cleanJson.Substring(3);
-                }
-                if (cleanJson.EndsWith("```", StringComparison.OrdinalIgnoreCase))
-                {
-                    cleanJson = cleanJson.Substring(0, cleanJson.Length - 3);
-                }
-
-                cleanJson = cleanJson.Trim();
-
-                // Настраиваем парсер на игнорирование регистра ключей
                 var options = new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true,
                     AllowTrailingCommas = true
                 };
 
-                var draftSteps = JsonSerializer.Deserialize<List<TrajectoryStepDto>>(cleanJson, options);
-                return draftSteps ?? new List<TrajectoryStepDto>();
+                // Ищем четкие границы массива
+                int startIndex = responseText.IndexOf('[');
+                int endIndex = responseText.LastIndexOf(']');
+
+                if (startIndex != -1 && endIndex != -1 && endIndex > startIndex)
+                {
+                    // Вырезаем ровно то, что находится между скобками [ ]
+                    var cleanJson = responseText.Substring(startIndex, endIndex - startIndex + 1);
+                    return JsonSerializer.Deserialize<List<TrajectoryStepDto>>(cleanJson, options) ?? new List<TrajectoryStepDto>();
+                }
+
+                Console.WriteLine("JSON массив не найден в ответе.");
+                return new List<TrajectoryStepDto>();
             }
             catch (Exception ex)
             {
-                // В реальном проекте тут стоит залогировать ошибку (Ilogger)
-                Console.WriteLine($"Ошибка парсинга JSON от LLM: {ex.Message}\nСырой ответ: {responseText}");
+                Console.WriteLine($"Ошибка парсинга JSON: {ex.Message}");
                 return new List<TrajectoryStepDto>();
             }
         }

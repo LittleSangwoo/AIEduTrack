@@ -193,23 +193,20 @@
             }, 500);
         }
 
-        // Имитация выгрузки в Excel
+        // Выгрузка в Excel
         exportExcelBtn.addEventListener('click', function () {
             const originalText = this.innerHTML;
-            this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Формирование...';
+            this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Формирование отчета...';
             this.disabled = true;
 
+            // Используем window.location для запуска скачивания файла
+            window.location.href = '/Dashboard/DownloadBenchmarkReport';
+
+            // Возвращаем кнопку в исходное состояние через несколько секунд
             setTimeout(() => {
-                this.innerHTML = '<i class="bi bi-check-lg"></i> Файл скачан';
-                this.classList.replace('btn-excel', 'btn-success');
-                
-                // Имитация скачивания файла (в реальности тут будет window.location.href = '/Report/DownloadExcel')
-                setTimeout(() => {
-                    this.innerHTML = originalText;
-                    this.classList.replace('btn-success', 'btn-excel');
-                    this.disabled = false;
-                }, 3000);
-            }, 1500);
+                this.innerHTML = originalText;
+                this.disabled = false;
+            }, 3000);
         });
     });
 </script>

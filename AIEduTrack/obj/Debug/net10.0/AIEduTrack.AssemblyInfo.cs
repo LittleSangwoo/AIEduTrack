@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AIEduTrack")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+aeac492cc47d9079f314c377d99c5623cee721d5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+607ddc6d40922ad482380fb4006851c74a2632da")]
 [assembly: System.Reflection.AssemblyProductAttribute("AIEduTrack")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AIEduTrack")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
