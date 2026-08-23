@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "AIEduTrack/1.0.0": {
+        "runtime": {
+          "AIEduTrack.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "AIEduTrack/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

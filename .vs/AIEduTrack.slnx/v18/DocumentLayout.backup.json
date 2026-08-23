@@ -1,0 +1,238 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\AIAgent\\AIEduTrack\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{B7E784CE-1CC5-4C50-A75C-2C69D99AF271}|AIEduTrack\\AIEduTrack.csproj|d:\\aiagent\\aiedutrack\\aiedutrack\\services\\llm\\llmclients.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B7E784CE-1CC5-4C50-A75C-2C69D99AF271}|AIEduTrack\\AIEduTrack.csproj|solutionrelative:aiedutrack\\services\\llm\\llmclients.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7E784CE-1CC5-4C50-A75C-2C69D99AF271}|AIEduTrack\\AIEduTrack.csproj|d:\\aiagent\\aiedutrack\\aiedutrack\\services\\llm\\illmclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B7E784CE-1CC5-4C50-A75C-2C69D99AF271}|AIEduTrack\\AIEduTrack.csproj|solutionrelative:aiedutrack\\services\\llm\\illmclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7E784CE-1CC5-4C50-A75C-2C69D99AF271}|AIEduTrack\\AIEduTrack.csproj|d:\\aiagent\\aiedutrack\\aiedutrack\\services\\agents\\ivalidatoragent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B7E784CE-1CC5-4C50-A75C-2C69D99AF271}|AIEduTrack\\AIEduTrack.csproj|solutionrelative:aiedutrack\\services\\agents\\ivalidatoragent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7E784CE-1CC5-4C50-A75C-2C69D99AF271}|AIEduTrack\\AIEduTrack.csproj|d:\\aiagent\\aiedutrack\\aiedutrack\\services\\agents\\iexplaineragent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B7E784CE-1CC5-4C50-A75C-2C69D99AF271}|AIEduTrack\\AIEduTrack.csproj|solutionrelative:aiedutrack\\services\\agents\\iexplaineragent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7E784CE-1CC5-4C50-A75C-2C69D99AF271}|AIEduTrack\\AIEduTrack.csproj|d:\\aiagent\\aiedutrack\\aiedutrack\\services\\agents\\icontextanalyzeragent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B7E784CE-1CC5-4C50-A75C-2C69D99AF271}|AIEduTrack\\AIEduTrack.csproj|solutionrelative:aiedutrack\\services\\agents\\icontextanalyzeragent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7E784CE-1CC5-4C50-A75C-2C69D99AF271}|AIEduTrack\\AIEduTrack.csproj|d:\\aiagent\\aiedutrack\\aiedutrack\\data\\idatarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B7E784CE-1CC5-4C50-A75C-2C69D99AF271}|AIEduTrack\\AIEduTrack.csproj|solutionrelative:aiedutrack\\data\\idatarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7E784CE-1CC5-4C50-A75C-2C69D99AF271}|AIEduTrack\\AIEduTrack.csproj|d:\\aiagent\\aiedutrack\\aiedutrack\\models\\domainmodels.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B7E784CE-1CC5-4C50-A75C-2C69D99AF271}|AIEduTrack\\AIEduTrack.csproj|solutionrelative:aiedutrack\\models\\domainmodels.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7E784CE-1CC5-4C50-A75C-2C69D99AF271}|AIEduTrack\\AIEduTrack.csproj|d:\\aiagent\\aiedutrack\\aiedutrack\\services\\llm\\llmfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B7E784CE-1CC5-4C50-A75C-2C69D99AF271}|AIEduTrack\\AIEduTrack.csproj|solutionrelative:aiedutrack\\services\\llm\\llmfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7E784CE-1CC5-4C50-A75C-2C69D99AF271}|AIEduTrack\\AIEduTrack.csproj|d:\\aiagent\\aiedutrack\\aiedutrack\\services\\llm\\illmfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B7E784CE-1CC5-4C50-A75C-2C69D99AF271}|AIEduTrack\\AIEduTrack.csproj|solutionrelative:aiedutrack\\services\\llm\\illmfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7E784CE-1CC5-4C50-A75C-2C69D99AF271}|AIEduTrack\\AIEduTrack.csproj|d:\\aiagent\\aiedutrack\\aiedutrack\\services\\agents\\itrajectorycuratoragent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B7E784CE-1CC5-4C50-A75C-2C69D99AF271}|AIEduTrack\\AIEduTrack.csproj|solutionrelative:aiedutrack\\services\\agents\\itrajectorycuratoragent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7E784CE-1CC5-4C50-A75C-2C69D99AF271}|AIEduTrack\\AIEduTrack.csproj|d:\\aiagent\\aiedutrack\\aiedutrack\\services\\trajectoryorchestrator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B7E784CE-1CC5-4C50-A75C-2C69D99AF271}|AIEduTrack\\AIEduTrack.csproj|solutionrelative:aiedutrack\\services\\trajectoryorchestrator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7E784CE-1CC5-4C50-A75C-2C69D99AF271}|AIEduTrack\\AIEduTrack.csproj|d:\\aiagent\\aiedutrack\\aiedutrack\\models\\dtos\\trajectoryresultdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B7E784CE-1CC5-4C50-A75C-2C69D99AF271}|AIEduTrack\\AIEduTrack.csproj|solutionrelative:aiedutrack\\models\\dtos\\trajectoryresultdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 1,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedHeight": 502,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "IExplainerAgent.cs",
+              "DocumentMoniker": "D:\\AIAgent\\AIEduTrack\\AIEduTrack\\Services\\Agents\\IExplainerAgent.cs",
+              "RelativeDocumentMoniker": "AIEduTrack\\Services\\Agents\\IExplainerAgent.cs",
+              "ToolTip": "D:\\AIAgent\\AIEduTrack\\AIEduTrack\\Services\\Agents\\IExplainerAgent.cs*",
+              "RelativeToolTip": "AIEduTrack\\Services\\Agents\\IExplainerAgent.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAgAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-23T13:29:13.702Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "IValidatorAgent.cs",
+              "DocumentMoniker": "D:\\AIAgent\\AIEduTrack\\AIEduTrack\\Services\\Agents\\IValidatorAgent.cs",
+              "RelativeDocumentMoniker": "AIEduTrack\\Services\\Agents\\IValidatorAgent.cs",
+              "ToolTip": "D:\\AIAgent\\AIEduTrack\\AIEduTrack\\Services\\Agents\\IValidatorAgent.cs*",
+              "RelativeToolTip": "AIEduTrack\\Services\\Agents\\IValidatorAgent.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAcAAABIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-23T13:27:04.451Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "LLMClients.cs",
+              "DocumentMoniker": "D:\\AIAgent\\AIEduTrack\\AIEduTrack\\Services\\LLM\\LLMClients.cs",
+              "RelativeDocumentMoniker": "AIEduTrack\\Services\\LLM\\LLMClients.cs",
+              "ToolTip": "D:\\AIAgent\\AIEduTrack\\AIEduTrack\\Services\\LLM\\LLMClients.cs*",
+              "RelativeToolTip": "AIEduTrack\\Services\\LLM\\LLMClients.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-23T13:33:00.694Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ILLMClient.cs",
+              "DocumentMoniker": "D:\\AIAgent\\AIEduTrack\\AIEduTrack\\Services\\LLM\\ILLMClient.cs",
+              "RelativeDocumentMoniker": "AIEduTrack\\Services\\LLM\\ILLMClient.cs",
+              "ToolTip": "D:\\AIAgent\\AIEduTrack\\AIEduTrack\\Services\\LLM\\ILLMClient.cs*",
+              "RelativeToolTip": "AIEduTrack\\Services\\LLM\\ILLMClient.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-23T13:24:08.256Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "IContextAnalyzerAgent.cs",
+              "DocumentMoniker": "D:\\AIAgent\\AIEduTrack\\AIEduTrack\\Services\\Agents\\IContextAnalyzerAgent.cs",
+              "RelativeDocumentMoniker": "AIEduTrack\\Services\\Agents\\IContextAnalyzerAgent.cs",
+              "ToolTip": "D:\\AIAgent\\AIEduTrack\\AIEduTrack\\Services\\Agents\\IContextAnalyzerAgent.cs*",
+              "RelativeToolTip": "AIEduTrack\\Services\\Agents\\IContextAnalyzerAgent.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAYAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-23T13:26:23.223Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "IDataRepository.cs",
+              "DocumentMoniker": "D:\\AIAgent\\AIEduTrack\\AIEduTrack\\Data\\IDataRepository.cs",
+              "RelativeDocumentMoniker": "AIEduTrack\\Data\\IDataRepository.cs",
+              "ToolTip": "D:\\AIAgent\\AIEduTrack\\AIEduTrack\\Data\\IDataRepository.cs*",
+              "RelativeToolTip": "AIEduTrack\\Data\\IDataRepository.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-23T13:20:52.012Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "DomainModels.cs",
+              "DocumentMoniker": "D:\\AIAgent\\AIEduTrack\\AIEduTrack\\Models\\DomainModels.cs",
+              "RelativeDocumentMoniker": "AIEduTrack\\Models\\DomainModels.cs",
+              "ToolTip": "D:\\AIAgent\\AIEduTrack\\AIEduTrack\\Models\\DomainModels.cs*",
+              "RelativeToolTip": "AIEduTrack\\Models\\DomainModels.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-23T13:32:29.168Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "LLMFactory.cs",
+              "DocumentMoniker": "D:\\AIAgent\\AIEduTrack\\AIEduTrack\\Services\\LLM\\LLMFactory.cs",
+              "RelativeDocumentMoniker": "AIEduTrack\\Services\\LLM\\LLMFactory.cs",
+              "ToolTip": "D:\\AIAgent\\AIEduTrack\\AIEduTrack\\Services\\LLM\\LLMFactory.cs*",
+              "RelativeToolTip": "AIEduTrack\\Services\\LLM\\LLMFactory.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-23T13:25:30.749Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "ILLMFactory.cs",
+              "DocumentMoniker": "D:\\AIAgent\\AIEduTrack\\AIEduTrack\\Services\\LLM\\ILLMFactory.cs",
+              "RelativeDocumentMoniker": "AIEduTrack\\Services\\LLM\\ILLMFactory.cs",
+              "ToolTip": "D:\\AIAgent\\AIEduTrack\\AIEduTrack\\Services\\LLM\\ILLMFactory.cs*",
+              "RelativeToolTip": "AIEduTrack\\Services\\LLM\\ILLMFactory.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-23T13:24:28.069Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "ITrajectoryCuratorAgent.cs",
+              "DocumentMoniker": "D:\\AIAgent\\AIEduTrack\\AIEduTrack\\Services\\Agents\\ITrajectoryCuratorAgent.cs",
+              "RelativeDocumentMoniker": "AIEduTrack\\Services\\Agents\\ITrajectoryCuratorAgent.cs",
+              "ToolTip": "D:\\AIAgent\\AIEduTrack\\AIEduTrack\\Services\\Agents\\ITrajectoryCuratorAgent.cs*",
+              "RelativeToolTip": "AIEduTrack\\Services\\Agents\\ITrajectoryCuratorAgent.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-23T13:26:42.128Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "TrajectoryOrchestrator.cs",
+              "DocumentMoniker": "D:\\AIAgent\\AIEduTrack\\AIEduTrack\\Services\\TrajectoryOrchestrator.cs",
+              "RelativeDocumentMoniker": "AIEduTrack\\Services\\TrajectoryOrchestrator.cs",
+              "ToolTip": "D:\\AIAgent\\AIEduTrack\\AIEduTrack\\Services\\TrajectoryOrchestrator.cs*",
+              "RelativeToolTip": "AIEduTrack\\Services\\TrajectoryOrchestrator.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADkAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-23T13:29:42.935Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "TrajectoryResultDto.cs",
+              "DocumentMoniker": "D:\\AIAgent\\AIEduTrack\\AIEduTrack\\Models\\DTOs\\TrajectoryResultDto.cs",
+              "RelativeDocumentMoniker": "AIEduTrack\\Models\\DTOs\\TrajectoryResultDto.cs",
+              "ToolTip": "D:\\AIAgent\\AIEduTrack\\AIEduTrack\\Models\\DTOs\\TrajectoryResultDto.cs*",
+              "RelativeToolTip": "AIEduTrack\\Models\\DTOs\\TrajectoryResultDto.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-23T13:12:22.663Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedHeight": 502,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{a80febb4-e7e0-4147-b476-21aaf2453969}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
