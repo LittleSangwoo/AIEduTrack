@@ -46,11 +46,14 @@
                             </li>
                         }
 
-                        <li class="nav-item">
-                            <a class="nav-link nav-btn" asp-controller="Home" asp-action="Index">
-                                <i class="bi bi-arrow-left-right"></i> Сменить режим
-                            </a>
-                        </li>
+                        @if (controllerName != "Home")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link nav-btn" asp-controller="Home" asp-action="Index">
+                                    <i class="bi bi-arrow-left-right"></i> Сменить режим
+                                </a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

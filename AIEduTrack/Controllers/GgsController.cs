@@ -1,7 +1,9 @@
 ﻿using AIEduTrack.Data;
 using AIEduTrack.Models;
+using AIEduTrack.Models.DTOs;
 using AIEduTrack.Services;
 using AIEduTrack.Services.LLM;
+using AIEduTrack.Services.Report;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AIEduTrack.Controllers
@@ -11,12 +13,18 @@ namespace AIEduTrack.Controllers
         private readonly IDataRepository _dataRepository;
         private readonly TrajectoryOrchestrator _orchestrator;
         private readonly ILlmSettingsService _llmSettings;
+        private readonly ITrajectoryExportService _exportService;
 
-        public GgsController(IDataRepository dataRepository, TrajectoryOrchestrator orchestrator, ILlmSettingsService llmSettings)
+        public GgsController(
+            IDataRepository dataRepository,
+            TrajectoryOrchestrator orchestrator,
+            ILlmSettingsService llmSettings,
+            ITrajectoryExportService exportService)
         {
             _dataRepository = dataRepository;
             _orchestrator = orchestrator;
             _llmSettings = llmSettings;
+            _exportService = exportService;
         }
 
         public IActionResult Index()
@@ -73,6 +81,46 @@ namespace AIEduTrack.Controllers
             catch (Exception ex)
             {
                 return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        // Экспорт уже сгенерированной траектории (без повторного похода к LLM) —
+        // фронт присылает обратно тот же TrajectoryResultDto, что получил ранее
+        [HttpPost]
+        public IActionResult ExportTrajectory([FromBody] TrajectoryResultDto trajectory, [FromQuery] string format)
+        {
+            try
+            {
+                byte[] fileBytes;
+                string mimeType;
+                string extension;
+
+                switch (format?.ToLowerInvariant())
+                {
+                    case "excel":
+                        fileBytes = _exportService.ExportToExcel(trajectory);
+                        mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                        extension = "xlsx";
+                        break;
+                    case "word":
+                        fileBytes = _exportService.ExportToWord(trajectory);
+                        mimeType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+                        extension = "docx";
+                        break;
+                    case "json":
+                    default:
+                        fileBytes = _exportService.ExportToJson(trajectory);
+                        mimeType = "application/json";
+                        extension = "json";
+                        break;
+                }
+
+                var fileName = $"Траектория_{trajectory.UserId}_{DateTime.Now:yyyyMMdd}.{extension}";
+                return File(fileBytes, mimeType, fileName);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Ошибка экспорта: {ex.Message}");
             }
         }
     }

@@ -45,7 +45,7 @@ namespace AIEduTrack.Services.Agents
             contextBuilder.AppendLine($"Не пройдено (дефицит навыков): {(failedCourses.Any() ? string.Join("; ", failedCourses) : "Нет")}");
 
             contextBuilder.AppendLine("\n[ПАТТЕРНЫ КОЛЛЕГ]");
-            contextBuilder.AppendLine("Успешный опыт сотрудников с аналогичной должностью в этом же ИОГВ:");
+            contextBuilder.AppendLine("Успешный опыт государственных гражданских служащих с аналогичной должностью в этом же ИОГВ:");
             contextBuilder.AppendLine(popularAmongColleagues.Any()
                 ? string.Join("; ", popularAmongColleagues)
                 : "Недостаточно данных для анализа коллег.");

@@ -188,6 +188,28 @@
         background: var(--accent-soft);
         color: #fff;
     }
+    /* Стилизация нативного input[type=file] — под тот же вид, что и .dark-input */
+    .dark-input[type="file"] {
+        padding: 8px 12px;
+    }
+
+        .dark-input[type="file"]::file-selector-button {
+            background: var(--bg-panel-2);
+            color: var(--text-primary);
+            border: 1px solid var(--border-strong);
+            border-radius: 6px;
+            padding: 6px 14px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            margin-right: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+            .dark-input[type="file"]::file-selector-button:hover {
+                border-color: var(--accent-bright);
+                background: var(--accent-soft);
+            }
 
     /* Таймлайн траектории */
     .timeline-container {
@@ -288,57 +310,64 @@
     <div class="page-header">
         <div class="eyebrow">AIEduTrack</div>
         <h1>Конструктор траектории</h1>
-        <p>Формирование индивидуального плана обучения на основе профиля сотрудника и дефицита компетенций</p>
+        <p>Формирование индивидуального плана обучения на основе профиля ггс и дефицита компетенций</p>
     </div>
     <div class="row g-4">
         
         <!-- ЛЕВАЯ ПАНЕЛЬ: Настройки и профиль -->
         <div class="col-lg-4">
             <div class="glass-panel p-4 mb-4">
-                <h4 class="section-title mb-4"><i class="bi bi-person-badge"></i> Выбор сотрудника</h4>
-                
+                <h4 class="section-title mb-4"><i class="bi bi-person-badge"></i> Выбор ГГС</h4>
+
                 <div class="mb-3">
-                    <label class="form-label">ID или ФИО ГГС</label>
+                    <label class="form-label">ID сотрудника</label>
                     <select class="form-select dark-input" id="employeeSelect">
-                        <option value="" selected disabled>Выберите сотрудника...</option>
-                        <option value="1">Иванов Иван Иванович (ID: 1042)</option>
-                        <option value="2">Смирнова Анна Сергеевна (ID: 2011)</option>
+                        <option value="" selected disabled>Выберите ГГС...</option>
                     </select>
+                    <small id="usersCountHint" class="text-muted-custom d-block mt-1" style="font-size: 0.75rem;"></small>
                 </div>
 
-                <!-- Карточка профиля (скрыта до выбора) -->
+                <!-- Карточка профиля (скрыта до выбора), заполняется реальными данными из JS -->
                 <div id="profileCard" class="profile-card p-3 d-none">
                     <div class="d-flex justify-content-between align-items-center mb-2">
-                        <span class="badge bg-primary">Специалист</span>
-                        <small class="text-muted-custom">Комитет по информатизации</small>
+                        <span id="profileRole" class="badge bg-primary">—</span>
+                        <small id="profileDepartment" class="text-muted-custom">—</small>
                     </div>
-                    <p class="mb-1 text-light fw-bold">Пройденные курсы:</p>
-                    <ul class="text-muted-custom small ps-3 mb-0">
-                        <li>Основы госслужбы (ППК)</li>
-                        <li>Тайм-менеджмент (ЭК)</li>
-                    </ul>
+                    <p class="mb-1 text-light fw-bold">Пройденные курсы: <span id="passedCount" class="text-muted-custom fw-normal"></span></p>
+                    <ul id="passedCoursesList" class="text-muted-custom small ps-3 mb-2" style="max-height: 120px; overflow-y: auto;"></ul>
+                    <p class="mb-1 text-light fw-bold">Не пройдено: <span id="failedCount" class="text-muted-custom fw-normal"></span></p>
+                    <ul id="failedCoursesList" class="text-muted-custom small ps-3 mb-0" style="max-height: 80px; overflow-y: auto;"></ul>
                 </div>
             </div>
 
-            <!-- Блок управления данными (Для администратора) -->
-<div class="glass-panel p-4 mb-4 border-primary border-opacity-25">
-    <h4 class="section-title mb-4 fs-5"><i class="bi bi-cloud-arrow-up"></i> Обновление базы данных</h4>
-    
-    <form id="uploadDataForm" enctype="multipart/form-data">
-        <div class="mb-3">
-            <label class="form-label small">История обучения ГГС (.xlsx)</label>
-            <input class="form-control dark-input form-control-sm" type="file" id="historyFile" accept=".xlsx, .csv">
-        </div>
-        <div class="mb-3">
-            <label class="form-label small">Реестр курсов (.xlsx)</label>
-            <input class="form-control dark-input form-control-sm" type="file" id="catalogFile" accept=".xlsx, .csv">
-        </div>
-        <button type="button" id="uploadFilesBtn" class="btn btn-outline-custom btn-sm w-100">
-            <i class="bi bi-database-add"></i> Загрузить и обновить БД
-        </button>
-    </form>
-</div>
+            <!-- Реальные данные пользователей, переданные из контроллера -->
+            <script id="allUsersData" type="application/json">@Html.Raw(ViewBag.AllUsersJson)</script>
 
+            <!-- Блок управления данными (Для администратора) -->
+            <div class="glass-panel p-4 mb-4 border-primary border-opacity-25">
+                <h4 class="section-title mb-4 fs-5"><i class="bi bi-cloud-arrow-up"></i> Обновление данных</h4>
+
+                <form id="uploadDataForm" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label class="form-label small">История обучения ГГС (.xlsx / .csv) *</label>
+                        <input class="form-control dark-input form-control-sm" type="file" id="historyFile" accept=".xlsx, .csv">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small">Реестр электронных курсов (.xlsx / .csv) *</label>
+                        <input class="form-control dark-input form-control-sm" type="file" id="catalogFile" accept=".xlsx, .csv">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small">Буклет программ ППК (.pdf) — необязательно</label>
+                        <input class="form-control dark-input form-control-sm" type="file" id="bookletFile" accept=".pdf">
+                        <small class="text-muted-custom d-block mt-1" style="font-size: 0.75rem;">
+                            Без буклета в каталоге будут только электронные курсы (ЭК), без программ повышения квалификации (ППК)
+                        </small>
+                    </div>
+                    <button type="button" id="uploadFilesBtn" class="btn btn-outline-custom btn-sm w-100">
+                        <i class="bi bi-database-add"></i> Загрузить и обновить данные
+                    </button>
+                </form>
+            </div>
             <div class="glass-panel p-4">
                 <h4 class="section-title mb-4"><i class="bi bi-cpu"></i> Выбор ИИ-движка</h4>
                 
@@ -382,7 +411,7 @@
                 <div id="emptyState" class="text-center py-5 mt-5">
                     <div class="fs-1 mb-3">🌌</div>
                     <h5>Траектория не сформирована</h5>
-                    <p>Выберите сотрудника и ИИ-движок для начала работы</p>
+                    <p>Выберите гсс и ИИ-движок для начала работы</p>
                 </div>
 
                 <!-- Лоадер -->
@@ -420,12 +449,54 @@
         }
 
         // Выбор сотрудника
-        employeeSelect.addEventListener('change', function () {
-            if (this.value) {
-                profileCard.classList.remove('d-none');
-                generateBtn.disabled = false;
-            }
-        });
+            // Загружаем реальных пользователей, переданных контроллером
+    const allUsersRaw = document.getElementById('allUsersData').textContent;
+    const allUsers = allUsersRaw ? JSON.parse(allUsersRaw) : [];
+
+    // Строим список в dropdown
+    allUsers.forEach(u => {
+        const opt = document.createElement('option');
+        opt.value = u.id;
+        opt.textContent = `${u.id} (${u.role || 'без должности'})`;
+        employeeSelect.appendChild(opt);
+    });
+
+    document.getElementById('usersCountHint').textContent =
+        allUsers.length > 0 ? `Загружено ${allUsers.length} сотрудников` : 'Данные не загружены — используйте форму ниже';
+
+    const profileRole = document.getElementById('profileRole');
+    const profileDepartment = document.getElementById('profileDepartment');
+    const passedCount = document.getElementById('passedCount');
+    const failedCount = document.getElementById('failedCount');
+    const passedCoursesList = document.getElementById('passedCoursesList');
+    const failedCoursesList = document.getElementById('failedCoursesList');
+
+    // Выбор сотрудника — заполняем карточку реальными данными
+    employeeSelect.addEventListener('change', function () {
+        const user = allUsers.find(u => u.id === this.value);
+        if (!user) return;
+
+        profileRole.textContent = user.role || 'Должность не указана';
+        profileDepartment.textContent = user.department || 'ИОГВ не указан';
+
+        const history = user.learningHistory || [];
+        const passed = history.filter(h => h.status === 'Пройден');
+        const failed = history.filter(h => h.status !== 'Пройден');
+
+        passedCount.textContent = `(${passed.length})`;
+        failedCount.textContent = `(${failed.length})`;
+
+        passedCoursesList.innerHTML = passed.length
+            ? passed.map(h => `<li>${h.courseName}</li>`).join('')
+            : '<li>Нет данных</li>';
+
+        failedCoursesList.innerHTML = failed.length
+            ? failed.map(h => `<li>${h.courseName}</li>`).join('')
+            : '<li>Нет</li>';
+
+        profileCard.classList.remove('d-none');
+        generateBtn.disabled = false;
+    });
 
         // Нажатие на генерацию
         // Нажатие на генерацию (РЕАЛЬНЫЙ ЗАПРОС К НЕЙРОСЕТЯМ)
@@ -508,37 +579,59 @@
         
     });
     // Обработка кнопки "Загрузить и обновить БД"
-        const uploadFilesBtn = document.getElementById('uploadFilesBtn');
-        if (uploadFilesBtn) {
-            uploadFilesBtn.addEventListener('click', function () {
-                const historyFile = document.getElementById('historyFile').files[0];
-                const catalogFile = document.getElementById('catalogFile').files[0];
+        // Обработка кнопки "Загрузить и обновить данные"
+    const uploadFilesBtn = document.getElementById('uploadFilesBtn');
+    if (uploadFilesBtn) {
+        uploadFilesBtn.addEventListener('click', function () {
+            const historyFile = document.getElementById('historyFile').files[0];
+            const catalogFile = document.getElementById('catalogFile').files[0];
+            const bookletFile = document.getElementById('bookletFile').files[0]; // необязательно
 
-                if (!historyFile || !catalogFile) {
-                    alert('Пожалуйста, выберите оба файла!');
-                    return;
-                }
+            if (!historyFile || !catalogFile) {
+                alert('Файлы истории обучения и реестра курсов обязательны!');
+                return;
+            }
 
-                const formData = new FormData();
-                formData.append('historyFile', historyFile);
-                formData.append('catalogFile', catalogFile);
+            const formData = new FormData();
+            formData.append('historyFile', historyFile);
+            formData.append('catalogFile', catalogFile);
+            if (bookletFile) {
+                formData.append('bookletFile', bookletFile);
+            }
 
-                uploadFilesBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Загрузка...';
-                uploadFilesBtn.disabled = true;
+            const originalText = uploadFilesBtn.innerHTML;
+            uploadFilesBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Загрузка и парсинг...';
+            uploadFilesBtn.disabled = true;
 
-                fetch('/Methodist/UploadData', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(result => {
-                    alert('Готово! Обновите страницу, чтобы увидеть новых сотрудников.');
-                    window.location.reload(); // Перезагружаем для обновления списка ГГС
-                })
-                .catch(error => {
-                    alert('Произошла ошибка при загрузке.');
-                    console.error(error);
-                });
+            fetch('/Methodist/UploadData', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Ошибка сервера при обработке файлов.');
+                return response.json();
+            })
+            .then(result => {
+                alert(result.message || 'Готово! Обновите страницу, чтобы увидеть новых сотрудников.');
+                window.location.reload();
+            })
+            .catch(error => {
+                alert('Произошла ошибка при загрузке: ' + error.message);
+                console.error(error);
+                uploadFilesBtn.innerHTML = originalText;
+                uploadFilesBtn.disabled = false;
             });
-        }
+        });
+    }
+        // Подсветка блока зелёным при выборе файла
+    function bindFileDropHighlight(inputId, dropId) {
+        const input = document.getElementById(inputId);
+        const drop = document.getElementById(dropId);
+        input.addEventListener('change', function () {
+            drop.classList.toggle('file-drop-filled', this.files.length > 0);
+        });
+    }
+    bindFileDropHighlight('historyFile', 'historyDrop');
+    bindFileDropHighlight('catalogFile', 'catalogDrop');
+    bindFileDropHighlight('bookletFile', 'bookletDrop');
 </script>

@@ -202,15 +202,16 @@
     <div class="glass-panel p-4 mb-4">
         <div class="mode-toggle">
             <div class="mode-btn active" id="modeExisting" onclick="setMode('existing')">У меня есть ID / ФИО</div>
-            <div class="mode-btn" id="modeNew" onclick="setMode('new')">Я новый сотрудник</div>
+            <div class="mode-btn" id="modeNew" onclick="setMode('new')">Я новый ггс</div>
         </div>
 
         <!-- Режим 1: сотрудник с историей -->
-        <div id="existingForm">
-            <label class="form-label">Ваш ID или ФИО</label>
-            <input type="text" id="employeeId" class="form-control dark-input" placeholder="Например: Иванов Иван Иванович" />
-            <div id="notFoundHint">Пользователь с таким ID не найден. Проверьте написание или выберите режим «Я новый сотрудник».</div>
-        </div>
+       <div id="existingForm">
+    <label class="form-label">Ваш ID (например: Пользователь 42)</label>
+    <input type="text" id="employeeId" class="form-control dark-input" placeholder="Пользователь 42" />
+    <div id="notFoundHint">Пользователь с таким ID не найден. Проверьте написание или выберите режим «Я новый сотрудник».</div>
+    <div id="foundHint" class="mt-2" style="display:none; color:#6ee7b7; font-size:0.85rem;"></div>
+</div>
 
         <!-- Режим 2: новый сотрудник без истории -->
         <div id="newForm" class="d-none">
@@ -248,12 +249,24 @@
     </div>
 
     <div id="resultPanel" class="glass-panel p-4 d-none">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h4 class="section-title mb-0"><i class="bi bi-map"></i> Ваш маршрут</h4>
-            <span id="generationStatus" class="badge bg-success"></span>
-        </div>
-        <div id="trajectoryTimeline" class="timeline-container"></div>
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+        <h4 class="section-title mb-0"><i class="bi bi-map"></i> Ваш маршрут</h4>
+        <span id="generationStatus" class="badge bg-success"></span>
     </div>
+
+    <div class="d-flex gap-2 mb-4 flex-wrap">
+        <button class="btn btn-outline-custom btn-sm" onclick="exportTrajectory('excel')">
+            <i class="bi bi-file-earmark-excel"></i> Excel
+        </button>
+        <button class="btn btn-outline-custom btn-sm" onclick="exportTrajectory('word')">
+            <i class="bi bi-file-earmark-word"></i> Word
+        </button>
+        <button class="btn btn-outline-custom btn-sm" onclick="exportTrajectory('json')">
+            <i class="bi bi-filetype-json"></i> JSON
+        </button>
+    </div>
+
+    <div id="trajectoryTimeline" class="timeline-container"></div>
 </div>
 
 <script>
@@ -268,8 +281,73 @@
         const trajectoryTimeline = document.getElementById('trajectoryTimeline');
         const generationStatus = document.getElementById('generationStatus');
         const notFoundHint = document.getElementById('notFoundHint');
+        // Храним последний сгенерированный результат для скачивания без повторной генерации
+let lastTrajectoryResult = null;
+
+window.exportTrajectory = async function (format) {
+    if (!lastTrajectoryResult) {
+        alert('Сначала сформируйте траекторию.');
+        return;
+    }
+
+    try {
+        const response = await fetch(`/Ggs/ExportTrajectory?format=${format}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(lastTrajectoryResult)
+        });
+
+        if (!response.ok) throw new Error('Ошибка сервера при формировании файла.');
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+
+        const ext = format === 'excel' ? 'xlsx' : format === 'word' ? 'docx' : 'json';
+        a.download = `Траектория_${lastTrajectoryResult.userId}.${ext}`;
+
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+    } catch (err) {
+        alert('Ошибка при скачивании: ' + err.message);
+        console.error(err);
+    }
+};
 
         let currentMode = 'existing';
+
+        // Проверка ID сразу при вводе (до нажатия основной кнопки)
+const employeeIdInput = document.getElementById('employeeId');
+const foundHint = document.getElementById('foundHint');
+
+employeeIdInput.addEventListener('blur', async function () {
+    const userId = this.value.trim();
+    foundHint.style.display = 'none';
+    notFoundHint.style.display = 'none';
+
+    if (!userId) return;
+
+    try {
+        const response = await fetch('/Ggs/FindMe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ UserId: userId })
+        });
+        const result = await response.json();
+
+        if (result.found) {
+            foundHint.textContent = `Найдено: ${result.role} · ${result.department}`;
+            foundHint.style.display = 'block';
+        } else {
+            notFoundHint.style.display = 'block';
+        }
+    } catch (err) {
+        console.error('Ошибка проверки ID:', err);
+    }
+});
 
         window.setMode = function (mode) {
             currentMode = mode;
@@ -331,7 +409,8 @@
                 const result = await response.json();
                 loader.classList.add('d-none');
 
-                if (result.success) {
+               if (result.success) {
+                    lastTrajectoryResult = result.data; // сохраняем для последующего экспорта
                     generationStatus.innerText = `Сгенерировано за ${(result.data.executionTimeMs / 1000).toFixed(1)} сек`;
                     renderTrajectory(result.data.steps);
                     resultPanel.classList.remove('d-none');

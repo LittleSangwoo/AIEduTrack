@@ -218,3 +218,10 @@ C:\Users\User\Desktop\AIEduTrack\AIEduTrack\obj\Debug\net10.0\refint\AIEduTrack.
 C:\Users\User\Desktop\AIEduTrack\AIEduTrack\obj\Debug\net10.0\AIEduTrack.pdb
 C:\Users\User\Desktop\AIEduTrack\AIEduTrack\obj\Debug\net10.0\AIEduTrack.genruntimeconfig.cache
 C:\Users\User\Desktop\AIEduTrack\AIEduTrack\obj\Debug\net10.0\ref\AIEduTrack.dll
+C:\Users\User\Desktop\AIEduTrack\AIEduTrack\bin\Debug\net10.0\UglyToad.PdfPig.Core.dll
+C:\Users\User\Desktop\AIEduTrack\AIEduTrack\bin\Debug\net10.0\UglyToad.PdfPig.DocumentLayoutAnalysis.dll
+C:\Users\User\Desktop\AIEduTrack\AIEduTrack\bin\Debug\net10.0\UglyToad.PdfPig.Fonts.dll
+C:\Users\User\Desktop\AIEduTrack\AIEduTrack\bin\Debug\net10.0\UglyToad.PdfPig.Package.dll
+C:\Users\User\Desktop\AIEduTrack\AIEduTrack\bin\Debug\net10.0\UglyToad.PdfPig.Tokenization.dll
+C:\Users\User\Desktop\AIEduTrack\AIEduTrack\bin\Debug\net10.0\UglyToad.PdfPig.Tokens.dll
+C:\Users\User\Desktop\AIEduTrack\AIEduTrack\bin\Debug\net10.0\UglyToad.PdfPig.dll

@@ -1,4 +1,5 @@
-﻿using AIEduTrack.Data;
+﻿using System.Text.Json;
+using AIEduTrack.Data;
 using AIEduTrack.Models.DTOs;
 using AIEduTrack.Services;
 using AIEduTrack.Services.LLM;
@@ -22,8 +23,14 @@ namespace AIEduTrack.Controllers
         public IActionResult Index()
         {
             var providers = _llmSettings.GetProviders().ToList();
-            // Для методиста список сотрудников виден целиком — это служебный доступ, не наружу
-            ViewBag.AllUsers = _dataRepository.GetAllUsers();
+            var allUsers = _dataRepository.GetAllUsers();
+
+            // Отдаём реальных пользователей как JSON для динамического построения списка в JS
+            ViewBag.AllUsersJson = JsonSerializer.Serialize(allUsers, new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            });
+
             return View(providers);
         }
 
@@ -42,17 +49,35 @@ namespace AIEduTrack.Controllers
         }
 
         [HttpPost]
-        public IActionResult UploadData(IFormFile historyFile, IFormFile catalogFile)
+        public IActionResult UploadData(IFormFile historyFile, IFormFile catalogFile, IFormFile? bookletFile)
         {
             if (historyFile == null || catalogFile == null)
-                return BadRequest("Оба файла должны быть загружены.");
+                return BadRequest("Файлы истории и реестра курсов обязательны.");
 
             try
             {
-                using var historyStream = historyFile.OpenReadStream();
-                using var catalogStream = catalogFile.OpenReadStream();
-                _dataRepository.UpdateData(historyStream, catalogStream);
-                return Ok(new { success = true, message = "Данные обновлены (замена файлов выполнена)." });
+                _dataRepository.ClearAll();
+
+                using (var catalogStream = catalogFile.OpenReadStream())
+                    _dataRepository.LoadCatalogFile(catalogStream, catalogFile.FileName);
+
+                using (var historyStream = historyFile.OpenReadStream())
+                    _dataRepository.LoadHistoryFile(historyStream, historyFile.FileName);
+
+                if (bookletFile != null && bookletFile.Length > 0)
+                {
+                    using var bookletStream = bookletFile.OpenReadStream();
+                    _dataRepository.LoadBookletFile(bookletStream);
+                }
+
+                var coursesCount = _dataRepository.GetAvailableCourses().Count;
+                var usersCount = _dataRepository.GetAllUsers().Count;
+
+                return Ok(new
+                {
+                    success = true,
+                    message = $"Данные обновлены: {coursesCount} курсов в каталоге, {usersCount} сотрудников."
+                });
             }
             catch (Exception ex)
             {

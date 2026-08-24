@@ -30,6 +30,7 @@ builder.Services.AddScoped<IValidatorAgent, ValidatorAgent>();
 builder.Services.AddScoped<IExplainerAgent, ExplainerAgent>();
 builder.Services.AddScoped<IBenchmarkService, BenchmarkService>();
 builder.Services.AddSingleton<IDataRepository, ExcelDataRepository>();
+builder.Services.AddScoped<AIEduTrack.Services.Report.ITrajectoryExportService, AIEduTrack.Services.Report.TrajectoryExportService>();
 
 var app = builder.Build();
 
