@@ -1,544 +1,78 @@
-﻿@model List<AIEduTrack.Models.LlmProviderConfig>
-@{
-    ViewData["Title"] = "Конструктор траектории";
+﻿@{
+    ViewData["Title"] = "AI-EduTrack";
 }
 
 <style>
-    :root {
-        --bg-deep: #0a0e1a;
-        --bg-panel: #141c2e;
-        --bg-panel-2: #1a2338;
-        --bg-input: #1c2740;
-        --border-soft: rgba(148, 163, 184, 0.14);
-        --border-strong: rgba(148, 163, 184, 0.28);
-        --accent: #3b82f6;
-        --accent-bright: #60a5fa;
-        --accent-soft: rgba(59, 130, 246, 0.16);
-        --text-primary: #f1f5f9;
-        --text-secondary: #b6c2d9;
-        --text-tertiary: #8899b3;
-        --success: #22c55e;
-        --radius-lg: 16px;
-        --radius-md: 12px;
-        --radius-sm: 8px;
+    .role-screen {
+        min-height: 80vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
     }
-
-    html, body {
-        color-scheme: dark; /* нативные select/input рендерятся в тёмной теме, а не белым на белом */
-    }
-
-    body {
-        background:
-            radial-gradient(circle at 12% 0%, rgba(59, 130, 246, 0.10), transparent 42%),
-            radial-gradient(circle at 88% 8%, rgba(34, 197, 94, 0.06), transparent 40%),
-            var(--bg-deep);
-        color: var(--text-primary);
-        font-family: 'Segoe UI', Inter, Roboto, sans-serif;
-    }
-
-    /* Заголовок страницы */
-    .page-header {
-        margin-bottom: 1.75rem;
-    }
-    .page-header .eyebrow {
-        color: var(--accent-bright);
-        font-size: 0.78rem;
-        font-weight: 600;
-        letter-spacing: 1.5px;
-        text-transform: uppercase;
-    }
-    .page-header h1 {
-        color: var(--text-primary);
+    .role-title {
+        color: #f1f5f9;
         font-weight: 700;
-        font-size: 1.9rem;
-        margin: 0.25rem 0 0.35rem;
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
     }
-    .page-header p {
-        color: var(--text-secondary);
-        margin: 0;
+    .role-subtitle {
+        color: #94a3b8;
+        margin-bottom: 3rem;
     }
-
-    /* Карточки: непрозрачный фон с чёткой рамкой — фон и текст больше не сливаются */
-    .glass-panel {
-        background: var(--bg-panel);
-        border: 1px solid var(--border-soft);
-        border-radius: var(--radius-lg);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-    }
-
-    .section-title {
-        color: var(--text-primary);
-        font-weight: 600;
-        font-size: 1.05rem;
-        letter-spacing: 0.3px;
+    .role-cards {
         display: flex;
-        align-items: center;
-        gap: 0.55rem;
+        gap: 24px;
+        flex-wrap: wrap;
+        justify-content: center;
     }
-    .section-title i {
-        color: var(--accent-bright);
-    }
-
-    /* Единый класс для второстепенного текста — контрастнее дефолтного Bootstrap text-muted на тёмном фоне */
-    .text-muted-custom {
-        color: var(--text-secondary) !important;
-    }
-    .text-faint {
-        color: var(--text-tertiary) !important;
-    }
-
-    .form-label {
-        color: var(--text-secondary);
-        font-size: 0.85rem;
-        font-weight: 600;
-        letter-spacing: 0.2px;
-        margin-bottom: 0.4rem;
-    }
-
-    /* Инпуты и Селекты */
-    .dark-input {
-        background-color: var(--bg-input);
-        border: 1px solid var(--border-strong);
-        color: var(--text-primary);
-        border-radius: var(--radius-sm);
-    }
-    .dark-input::placeholder {
-        color: var(--text-tertiary);
-    }
-    .dark-input:focus {
-        background-color: var(--bg-input);
-        color: #fff;
-        border-color: var(--accent);
-        box-shadow: 0 0 0 0.2rem var(--accent-soft);
-    }
-    .dark-input option {
-        background-color: var(--bg-panel-2);
-        color: var(--text-primary);
-    }
-
-    /* Карточка профиля */
-    .profile-card {
-        background: linear-gradient(145deg, #1a2338, #101828);
-        border: 1px solid var(--border-soft);
-        border-left: 4px solid var(--accent);
-        border-radius: var(--radius-sm);
-        animation: slideDown 0.4s ease forwards;
-    }
-    .profile-card .badge {
-        font-weight: 600;
-        letter-spacing: 0.3px;
-    }
-
-    /* Радиокнопки выбора движка */
-    .engine-option input {
-        display: none;
-    }
-    .engine-card {
-        display: flex;
-        align-items: center;
-        padding: 12px 16px;
-        background: var(--bg-panel-2);
-        border: 1px solid var(--border-soft);
-        border-radius: var(--radius-md);
+    .role-card {
+        width: 280px;
+        padding: 32px 24px;
+        background: #141c2e;
+        border: 1px solid rgba(148, 163, 184, 0.14);
+        border-radius: 16px;
+        text-decoration: none;
+        transition: all 0.25s ease;
         cursor: pointer;
-        transition: all 0.2s ease-in-out;
     }
-    .engine-option input:checked + .engine-card {
-        border-color: var(--accent);
-        background: var(--accent-soft);
-        box-shadow: 0 0 15px rgba(59, 130, 246, 0.25);
+    .role-card:hover {
+        border-color: #3b82f6;
+        box-shadow: 0 0 25px rgba(59, 130, 246, 0.25);
+        transform: translateY(-4px);
     }
-    .engine-card:hover {
-        border-color: var(--border-strong);
+    .role-card .icon {
+        font-size: 2.5rem;
+        margin-bottom: 12px;
     }
-    .engine-card h6 {
-        color: var(--text-primary);
+    .role-card h5 {
+        color: #f1f5f9;
+        font-weight: 700;
+        margin-bottom: 8px;
     }
-
-    /* Кнопка запуска генерации */
-    .btn-glow {
-        background: linear-gradient(90deg, #2563eb, #3b82f6);
-        color: #fff;
-        border: none;
-        border-radius: var(--radius-sm);
-        transition: all 0.3s ease;
-        letter-spacing: 0.3px;
-    }
-    .btn-glow:hover:not(:disabled) {
-        box-shadow: 0 0 20px rgba(59, 130, 246, 0.55);
-        transform: translateY(-2px);
-        color: #fff;
-    }
-    .btn-glow:disabled {
-        background: #26314a;
-        color: #64748b;
-    }
-
-    /* Кнопка загрузки данных */
-    .btn-outline-custom {
-        background: transparent;
-        border: 1px solid var(--border-strong);
-        color: var(--text-secondary);
-        border-radius: var(--radius-sm);
-        font-weight: 600;
-        transition: all 0.2s ease;
-    }
-    .btn-outline-custom:hover {
-        border-color: var(--accent-bright);
-        background: var(--accent-soft);
-        color: #fff;
-    }
-
-    /* Таймлайн траектории */
-    .timeline-container {
-        position: relative;
-        padding-left: 28px;
-    }
-    .timeline-container::before {
-        content: "";
-        position: absolute;
-        left: 9px;
-        top: 6px;
-        bottom: 6px;
-        width: 2px;
-        background: linear-gradient(to bottom, var(--accent), rgba(59, 130, 246, 0.05));
-    }
-    .timeline-item {
-        position: relative;
-        margin-bottom: 1.25rem;
-        opacity: 0;
-        animation: fadeInRight 0.5s ease forwards;
-    }
-    .timeline-item:last-child {
-        margin-bottom: 0;
-    }
-    .timeline-marker {
-        position: absolute;
-        left: -28px;
-        top: 18px;
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background: var(--accent-bright);
-        box-shadow: 0 0 0 4px var(--bg-deep), 0 0 12px rgba(96, 165, 250, 0.7);
-    }
-
-    /* Карточки курсов в таймлайне */
-    .course-card {
-        background: var(--bg-panel-2);
-        border: 1px solid var(--border-soft);
-        border-radius: var(--radius-md);
-        padding: 18px;
-        transition: all 0.3s ease;
-    }
-    .course-card:hover {
-        border-color: var(--accent-bright);
-        background: #1e2a45;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-    }
-    .course-card h5 {
-        color: var(--text-primary);
-        font-size: 1.05rem;
-    }
-    .course-card p {
-        color: var(--text-secondary);
-    }
-    .justification-block {
-        background: rgba(0, 0, 0, 0.25);
-        border-left: 3px solid var(--success);
-        padding: 12px 15px;
-        border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-        font-size: 0.92rem;
-        color: var(--text-secondary);
-        line-height: 1.5;
-    }
-    .justification-block strong {
-        color: #6ee7b7;
-    }
-
-    /* Пустое состояние и лоадер */
-    #emptyState {
-        color: var(--text-tertiary);
-    }
-    #emptyState h5 {
-        color: var(--text-secondary);
-        font-weight: 600;
-    }
-
-    /* Анимации */
-    @@keyframes slideDown {
-        from { opacity: 0; transform: translateY(-10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    @@keyframes fadeInRight {
-        from { opacity: 0; transform: translateX(20px); }
-        to { opacity: 1; transform: translateX(0); }
-    }
-    .fade-pulse {
-        animation: pulse 1.5s infinite;
-    }
-    @@keyframes pulse {
-        0% { opacity: 0.6; }
-        50% { opacity: 1; }
-        100% { opacity: 0.6; }
+    .role-card p {
+        color: #94a3b8;
+        font-size: 0.9rem;
+        margin: 0;
     }
 </style>
 
-<div class="dark-dashboard container-fluid py-4">
-    <div class="page-header">
-        <div class="eyebrow">AIEduTrack</div>
-        <h1>Конструктор траектории</h1>
-        <p>Формирование индивидуального плана обучения на основе профиля сотрудника и дефицита компетенций</p>
-    </div>
-    <div class="row g-4">
-        
-        <!-- ЛЕВАЯ ПАНЕЛЬ: Настройки и профиль -->
-        <div class="col-lg-4">
-            <div class="glass-panel p-4 mb-4">
-                <h4 class="section-title mb-4"><i class="bi bi-person-badge"></i> Выбор сотрудника</h4>
-                
-                <div class="mb-3">
-                    <label class="form-label">ID или ФИО ГГС</label>
-                    <select class="form-select dark-input" id="employeeSelect">
-                        <option value="" selected disabled>Выберите сотрудника...</option>
-                        <option value="1">Иванов Иван Иванович (ID: 1042)</option>
-                        <option value="2">Смирнова Анна Сергеевна (ID: 2011)</option>
-                    </select>
-                </div>
+<div class="role-screen">
+    <div class="role-title"><i class="bi bi-robot text-primary"></i> AI-EduTrack</div>
+    <div class="role-subtitle">Выберите режим работы</div>
 
-                <!-- Карточка профиля (скрыта до выбора) -->
-                <div id="profileCard" class="profile-card p-3 d-none">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <span class="badge bg-primary">Специалист</span>
-                        <small class="text-muted-custom">Комитет по информатизации</small>
-                    </div>
-                    <p class="mb-1 text-light fw-bold">Пройденные курсы:</p>
-                    <ul class="text-muted-custom small ps-3 mb-0">
-                        <li>Основы госслужбы (ППК)</li>
-                        <li>Тайм-менеджмент (ЭК)</li>
-                    </ul>
-                </div>
-            </div>
+    <div class="role-cards">
+        <a class="role-card" asp-controller="Methodist" asp-action="Index">
+            <div class="icon">🗂️</div>
+            <h5>Я методист</h5>
+            <p>Загрузка данных, конструктор траекторий, аналитика по всем сотрудникам, настройка ИИ-провайдеров</p>
+        </a>
 
-            <!-- Блок управления данными (Для администратора) -->
-<div class="glass-panel p-4 mb-4 border-primary border-opacity-25">
-    <h4 class="section-title mb-4 fs-5"><i class="bi bi-cloud-arrow-up"></i> Обновление базы данных</h4>
-    
-    <form id="uploadDataForm" enctype="multipart/form-data">
-        <div class="mb-3">
-            <label class="form-label small">История обучения ГГС (.xlsx)</label>
-            <input class="form-control dark-input form-control-sm" type="file" id="historyFile" accept=".xlsx, .csv">
-        </div>
-        <div class="mb-3">
-            <label class="form-label small">Реестр курсов (.xlsx)</label>
-            <input class="form-control dark-input form-control-sm" type="file" id="catalogFile" accept=".xlsx, .csv">
-        </div>
-        <button type="button" id="uploadFilesBtn" class="btn btn-outline-custom btn-sm w-100">
-            <i class="bi bi-database-add"></i> Загрузить и обновить БД
-        </button>
-    </form>
-</div>
-
-            <div class="glass-panel p-4">
-                <h4 class="section-title mb-4"><i class="bi bi-cpu"></i> Выбор ИИ-движка</h4>
-                
-                <div class="engine-selector">
-                    @foreach (var provider in Model)
-                    {
-                        // Определяем иконку по типу
-                        string icon = provider.IsLocal ? "💻" : (provider.AuthType == "GigaChat" ? "🇷🇺" : "🌐");
-                        // Делаем первый элемент выбранным по умолчанию
-                        string isChecked = provider == Model.First() ? "checked" : "";
-
-                        <label class="engine-option mb-3 d-block">
-                            <!-- В value передаем Name провайдера (например, "ollama local1") -->
-                            <input type="radio" name="llmEngine" value="@provider.Name" @isChecked>
-                            <div class="engine-card">
-                                <span class="fs-4">@icon</span>
-                                <div class="ms-3">
-                                    <h6 class="mb-0 text-light fw-bold">@provider.Name</h6>
-                                    <small class="text-muted-custom">@provider.Model (@provider.AuthType)</small>
-                                </div>
-                            </div>
-                        </label>
-                    }
-                </div>
-
-                <button id="generateBtn" class="btn btn-glow w-100 mt-4 py-2 fw-bold" disabled>
-                    Сформировать траекторию
-                </button>
-            </div>
-        </div>
-
-        <!-- ПРАВАЯ ПАНЕЛЬ: Интерактивная траектория -->
-        <div class="col-lg-8">
-            <div class="glass-panel p-4 h-100">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h4 class="section-title mb-0"><i class="bi bi-map"></i> Индивидуальный маршрут</h4>
-                    <span id="generationStatus" class="badge bg-success d-none fade-in">Сгенерировано за 2.4 сек</span>
-                </div>
-
-                <!-- Состояние пустого экрана -->
-                <div id="emptyState" class="text-center py-5 mt-5">
-                    <div class="fs-1 mb-3">🌌</div>
-                    <h5>Траектория не сформирована</h5>
-                    <p>Выберите сотрудника и ИИ-движок для начала работы</p>
-                </div>
-
-                <!-- Лоадер -->
-                <div id="loader" class="text-center py-5 d-none">
-                    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"></div>
-                    <p class="mt-3 text-light fade-pulse">Нейросеть анализирует дефицит компетенций...</p>
-                </div>
-
-                <!-- Контейнер таймлайна -->
-                <div id="trajectoryTimeline" class="timeline-container d-none">
-                    <!-- Шаги будут добавляться сюда через JS -->
-                </div>
-            </div>
-        </div>
+        <a class="role-card" asp-controller="Ggs" asp-action="Index">
+    <div class="icon">🧑‍💼</div>
+    <h5>Я ГГС (государственный гражданский служащий)</h5>
+    <p>Получить свою индивидуальную траекторию обучения по вашему ID или должности</p>
+</a>
     </div>
 </div>
-
-                    <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const employeeSelect = document.getElementById('employeeSelect');
-        const profileCard = document.getElementById('profileCard');
-        const generateBtn = document.getElementById('generateBtn');
-        
-        const emptyState = document.getElementById('emptyState');
-        const loader = document.getElementById('loader');
-        const trajectoryTimeline = document.getElementById('trajectoryTimeline');
-        const generationStatus = document.getElementById('generationStatus');
-
-        // Включение тултипов Bootstrap
-        function initTooltips() {
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            tooltipTriggerList.map(function (tooltipTriggerEl) {
-                return new bootstrap.Tooltip(tooltipTriggerEl);
-            });
-        }
-
-        // Выбор сотрудника
-        employeeSelect.addEventListener('change', function () {
-            if (this.value) {
-                profileCard.classList.remove('d-none');
-                generateBtn.disabled = false;
-            }
-        });
-
-        // Нажатие на генерацию
-        // Нажатие на генерацию (РЕАЛЬНЫЙ ЗАПРОС К НЕЙРОСЕТЯМ)
-        generateBtn.addEventListener('click', function () {
-            emptyState.classList.add('d-none');
-            trajectoryTimeline.classList.add('d-none');
-            generationStatus.classList.add('d-none');
-            trajectoryTimeline.innerHTML = ''; 
-            loader.classList.remove('d-none');
-            generateBtn.disabled = true;
-
-            // Получаем выбранную нейросеть и пользователя
-            const selectedEngine = document.querySelector('input[name="llmEngine"]:checked').value;
-            const selectedUserId = employeeSelect.value;
-
-            // Отправляем запрос на наш C# бэкенд
-            fetch('/Home/GenerateTrajectory', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ UserId: selectedUserId, LlmProvider: selectedEngine })
-            })
-            .then(response => response.json())
-            .then(result => {
-                loader.classList.add('d-none');
-                
-                if (result.success) {
-                    // Выводим реальное время генерации и строим маршрут
-                    generationStatus.innerText = `Сгенерировано за ${result.data.executionTimeMs / 1000} сек`;
-                    renderTrajectory(result.data.steps);
-                    generationStatus.classList.remove('d-none');
-                } else {
-                    alert('Ошибка генерации: ' + result.message);
-                }
-                
-                generateBtn.disabled = false;
-            })
-            .catch(error => {
-                loader.classList.add('d-none');
-                alert('Сетевая ошибка при обращении к ИИ.');
-                generateBtn.disabled = false;
-                console.error(error);
-            });
-        });
-
-        // Функция отрисовки шагов маршрута
-        function renderTrajectory(steps) {
-            steps.forEach((step, index) => {
-                // Задержка анимации для каждого шага каскадом
-                const delay = index * 0.2; 
-                
-                const stepHtml = `
-                    <div class="timeline-item" style="animation-delay: ${delay}s">
-                        <div class="timeline-marker"></div>
-                        <div class="course-card" data-bs-toggle="tooltip" data-bs-placement="top" 
-                             title="Развиваемые навыки: ${step.TargetCompetencies.join(', ')}">
-                            <div class="d-flex justify-content-between">
-                                <h5 class="text-white mb-1">
-                                    <span class="text-primary me-2">${step.Order}.</span> ${step.CourseName}
-                                </h5>
-                                <span class="badge bg-secondary">${step.CourseType}</span>
-                            </div>
-                            <p class="text-muted-custom small mb-3">${step.ShortDescription}</p>
-                            
-                            <div class="justification-block mt-2">
-                                <strong><i class="bi bi-robot"></i> Почему рекомендовано:</strong><br/>
-                                ${step.Justification}
-                            </div>
-                        </div>
-                    </div>
-                `;
-                trajectoryTimeline.insertAdjacentHTML('beforeend', stepHtml);
-            });
-            
-            trajectoryTimeline.classList.remove('d-none');
-            initTooltips(); // Активируем тултипы для новых элементов
-        }
-
-        
-    });
-    // Обработка кнопки "Загрузить и обновить БД"
-        const uploadFilesBtn = document.getElementById('uploadFilesBtn');
-        if (uploadFilesBtn) {
-            uploadFilesBtn.addEventListener('click', function () {
-                const historyFile = document.getElementById('historyFile').files[0];
-                const catalogFile = document.getElementById('catalogFile').files[0];
-
-                if (!historyFile || !catalogFile) {
-                    alert('Пожалуйста, выберите оба файла!');
-                    return;
-                }
-
-                const formData = new FormData();
-                formData.append('historyFile', historyFile);
-                formData.append('catalogFile', catalogFile);
-
-                uploadFilesBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Загрузка...';
-                uploadFilesBtn.disabled = true;
-
-                fetch('/Home/UploadData', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(result => {
-                    alert('Готово! Обновите страницу, чтобы увидеть новых сотрудников.');
-                    window.location.reload(); // Перезагружаем для обновления списка ГГС
-                })
-                .catch(error => {
-                    alert('Произошла ошибка при загрузке.');
-                    console.error(error);
-                });
-            });
-        }
-</script>

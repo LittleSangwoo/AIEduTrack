@@ -1,4 +1,5 @@
 ﻿using AIEduTrack.Data;
+using AIEduTrack.Models;
 using AIEduTrack.Models.DTOs;
 using AIEduTrack.Services.Agents;
 using AIEduTrack.Services.LLM;
@@ -30,22 +31,28 @@ namespace AIEduTrack.Services
             _repository = repository;
         }
 
+        // Старый вход: ищем существующего пользователя по ID (сценарий методиста / сотрудника с историей)
         public async Task<TrajectoryResultDto> GenerateAsync(string userId, string providerType)
+        {
+            var profile = _repository.GetProfile(userId);
+            return await GenerateAsync(profile, providerType);
+        }
+
+        // Новый вход: профиль уже готов (в т.ч. "новый сотрудник" — Role/Department без истории)
+        public async Task<TrajectoryResultDto> GenerateAsync(UserProfile profile, string providerType)
         {
             var watch = System.Diagnostics.Stopwatch.StartNew();
 
             var llm = _llmFactory.GetClient(providerType);
-            var profile = _repository.GetProfile(userId); // Убедись, что тут GetProfile, а не GetUserProfile
             var catalog = _repository.GetAvailableCourses();
             var allUsers = _repository.GetAllUsers();
 
-            // ДОБАВЬ ЭТОТ БЛОК:
             if (catalog == null || catalog.Count == 0)
             {
                 throw new Exception("БАЗА ДАННЫХ ПУСТА! Пожалуйста, загрузите Excel-файлы в панели слева.");
             }
 
-            // 1. Сбор контекста
+            // 1. Сбор контекста (для нового юзера LearningHistory пустая — агент это учитывает)
             var context = await _analyzer.AnalyzeProfileAsync(profile, catalog, allUsers);
 
             // 2. Генерация
@@ -68,11 +75,8 @@ namespace AIEduTrack.Services
                 Department = profile.Department,
                 ModelUsed = llm.ProviderName,
                 ExecutionTimeMs = watch.ElapsedMilliseconds,
-
-                // Записываем статистику для Excel-отчета
                 DraftStepsCount = draft.Count,
-                AlreadyPassedFiltered = draft.Count - validSteps.Count, // Упрощенный подсчет отсеянных
-
+                AlreadyPassedFiltered = draft.Count - validSteps.Count,
                 Steps = finalSteps
             };
         }
