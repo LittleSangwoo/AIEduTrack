@@ -1,0 +1,25 @@
+﻿version: '3.8'
+
+services:
+  aiedutrack-web:
+    build:
+      context: . # Контекст сборки - корневая папка решения
+      dockerfile: AIEduTrack/Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - ollama-server
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development # Development, чтобы жюри видело ошибки
+      - ASPNETCORE_URLS=http://+:8080
+
+  ollama-server:
+    image: ollama/ollama:latest
+    container_name: aiedutrack-ollama-server-1
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+      
+volumes:
+  ollama_data:
