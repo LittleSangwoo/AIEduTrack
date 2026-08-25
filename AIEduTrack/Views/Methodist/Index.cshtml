@@ -537,43 +537,77 @@
             })
             .catch(error => {
                 loader.classList.add('d-none');
-                alert('Сетевая ошибка при обращении к ИИ.');
+                alert('Сетевая ошибка при обращении к ИИ.' + error.message);
                 generateBtn.disabled = false;
                 console.error(error);
             });
         });
 
+        //ВАЖНО ЭТО УБРАТЬ!!
         // Функция отрисовки шагов маршрута
-        function renderTrajectory(steps) {
-            steps.forEach((step, index) => {
-                // Задержка анимации для каждого шага каскадом
-                const delay = index * 0.2; 
+        // function renderTrajectory(steps) {
+        //     steps.forEach((step, index) => {
+        //         Задержка анимации для каждого шага каскадом
+        //         const delay = index * 0.2; 
                 
-                const stepHtml = `
-                    <div class="timeline-item" style="animation-delay: ${delay}s">
-                        <div class="timeline-marker"></div>
-                        <div class="course-card" data-bs-toggle="tooltip" data-bs-placement="top" 
-                             title="Развиваемые навыки: ${step.TargetCompetencies.join(', ')}">
-                            <div class="d-flex justify-content-between">
-                                <h5 class="text-white mb-1">
-                                    <span class="text-primary me-2">${step.Order}.</span> ${step.CourseName}
-                                </h5>
-                                <span class="badge bg-secondary">${step.CourseType}</span>
-                            </div>
-                            <p class="text-muted-custom small mb-3">${step.ShortDescription}</p>
+        //         const stepHtml = `
+        //             <div class="timeline-item" style="animation-delay: ${delay}s">
+        //                 <div class="timeline-marker"></div>
+        //                 <div class="course-card" data-bs-toggle="tooltip" data-bs-placement="top" 
+        //                      title="Развиваемые навыки: ${step.TargetCompetencies.join(', ')}">
+        //                     <div class="d-flex justify-content-between">
+        //                         <h5 class="text-white mb-1">
+        //                             <span class="text-primary me-2">${step.Order}.</span> ${step.CourseName}
+        //                         </h5>
+        //                         <span class="badge bg-secondary">${step.CourseType}</span>
+        //                     </div>
+        //                     <p class="text-muted-custom small mb-3">${step.ShortDescription}</p>
                             
-                            <div class="justification-block mt-2">
-                                <strong><i class="bi bi-robot"></i> Почему рекомендовано:</strong><br/>
-                                ${step.Justification}
-                            </div>
+        //                     <div class="justification-block mt-2">
+        //                         <strong><i class="bi bi-robot"></i> Почему рекомендовано:</strong><br/>
+        //                         ${step.Justification}
+        //                     </div>
+        //                 </div>
+        //             </div>
+        //         `;
+        //         trajectoryTimeline.insertAdjacentHTML('beforeend', stepHtml);
+        //     });
+            
+        //     trajectoryTimeline.classList.remove('d-none');
+        //     initTooltips(); Активируем тултипы для новых элементов
+        // }
+
+        function renderTrajectory(steps) {
+            const timeline = document.getElementById('trajectoryTimeline');
+            if (!timeline) return;
+            
+            timeline.innerHTML = '';
+            
+            steps.forEach(step => {
+                let compsHtml = '';
+                
+                // БРОНЕБОЙНАЯ ПРОВЕРКА: смотрим, что именно пришло от C#
+                if (Array.isArray(step.targetCompetencies)) {
+                    // Если это настоящий массив - перебираем его
+                    compsHtml = step.targetCompetencies.map(c => `<span class="badge bg-primary me-1">${c}</span>`).join('');
+                } else if (typeof step.targetCompetencies === 'string' && step.targetCompetencies.length > 0) {
+                    // Если это просто строка - выводим как один бейдж
+                    compsHtml = `<span class="badge bg-primary me-1">${step.targetCompetencies}</span>`;
+                }
+
+                timeline.innerHTML += `
+                    <div class="course-card mb-3">
+                        <h5 class="text-white">${step.courseName || 'Без названия'} <span class="badge bg-secondary ms-2" style="font-size:0.7rem;">${step.courseType || 'ЭК'}</span></h5>
+                        <p class="text-muted-custom mb-2">${step.shortDescription || 'Описание отсутствует'}</p>
+                        <div class="mb-2">${compsHtml}</div>
+                        <div class="justification-block mt-3">
+                            🤖 <strong>Обоснование ИИ:</strong> ${step.justification || 'Рекомендовано системой.'}
                         </div>
                     </div>
                 `;
-                trajectoryTimeline.insertAdjacentHTML('beforeend', stepHtml);
             });
             
-            trajectoryTimeline.classList.remove('d-none');
-            initTooltips(); // Активируем тултипы для новых элементов
+            timeline.classList.remove('d-none');
         }
 
         

@@ -363,6 +363,7 @@ employeeIdInput.addEventListener('blur', async function () {
             list.map(el => new bootstrap.Tooltip(el));
         }
 
+        // Нажатие на генерацию
         generateBtn.addEventListener('click', async function () {
             const provider = document.getElementById('providerSelect').value;
 
@@ -372,7 +373,7 @@ employeeIdInput.addEventListener('blur', async function () {
             generateBtn.disabled = true;
 
             try {
-                let response;
+                let response; // Объявляем переменную
 
                 if (currentMode === 'existing') {
                     const userId = document.getElementById('employeeId').value.trim();
@@ -383,7 +384,8 @@ employeeIdInput.addEventListener('blur', async function () {
                         return;
                     }
 
-                    fetch('/Ggs/GetMyTrajectory', {
+                    // ИСПРАВЛЕНО: добавлено "response = await"
+                    response = await fetch('/Ggs/GetMyTrajectory', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ UserId: userId, LlmProvider: provider })
@@ -399,6 +401,7 @@ employeeIdInput.addEventListener('blur', async function () {
                         return;
                     }
 
+                    // Здесь всё было правильно
                     response = await fetch('/Ggs/GetTrajectoryForNewGgs', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -409,53 +412,80 @@ employeeIdInput.addEventListener('blur', async function () {
                 const result = await response.json();
                 loader.classList.add('d-none');
 
-               if (result.success) {
-                    lastTrajectoryResult = result.data; // сохраняем для последующего экспорта
-                    generationStatus.innerText = `Сгенерировано за ${(result.data.executionTimeMs / 1000).toFixed(1)} сек`;
-                    renderTrajectory(result.data.steps);
+                if (result.success) {
+                    lastTrajectoryResult = result.data; 
+                    
+                    if (typeof generationStatus !== 'undefined' && generationStatus) {
+                        generationStatus.innerText = `Сгенерировано за ${(result.data.executionTimeMs / 1000).toFixed(1)} сек`;
+                    }
+                    
+                    // Передаем шаги на отрисовку
+                    renderTrajectory(result.data.steps || result.data.Steps || []);
                     resultPanel.classList.remove('d-none');
                 } else {
                     if (currentMode === 'existing') {
                         notFoundHint.style.display = 'block';
                     } else {
-                        alert('Ошибка: ' + result.message);
+                        alert('Ошибка сервера: ' + result.message);
                     }
                 }
             } catch (err) {
                 loader.classList.add('d-none');
-                alert('Сетевая ошибка при обращении к серверу.');
+                // Теперь мы будем видеть реальную ошибку, если что-то пойдет не так
+                alert('JS Ошибка: ' + err.message);
                 console.error(err);
             }
 
             generateBtn.disabled = false;
         });
 
+        // Бронебойная функция отрисовки (понимает любые форматы от C#)
         function renderTrajectory(steps) {
-            trajectoryTimeline.innerHTML = '';
+            const timeline = document.getElementById('trajectoryTimeline');
+            if (!timeline) return;
+
+            timeline.innerHTML = '';
+            
+            if (!Array.isArray(steps)) return;
+
             steps.forEach((step, index) => {
                 const delay = index * 0.2;
+                
+                // Учитываем разницу регистров (camelCase vs PascalCase)
+                const courseName = step.courseName || step.CourseName || 'Без названия';
+                const courseType = step.courseType || step.CourseType || 'ЭК';
+                const shortDescription = step.shortDescription || step.ShortDescription || '';
+                const justification = step.justification || step.Justification || '';
+                const order = step.order || step.Order || (index + 1);
+                
+                // Защита от строковых компетенций вместо массива
+                let competencies = step.targetCompetencies || step.TargetCompetencies || [];
+                let compsText = Array.isArray(competencies) ? competencies.join(', ') : competencies;
+
                 const stepHtml = `
                     <div class="timeline-item" style="animation-delay: ${delay}s">
                         <div class="timeline-marker"></div>
-                        <div class="course-card" data-bs-toggle="tooltip" data-bs-placement="top"
-                             title="${step.ShortDescription ?? ''}">
+                        <div class="course-card" data-bs-toggle="tooltip" data-bs-placement="top" title="${shortDescription}">
                             <div class="d-flex justify-content-between">
                                 <h5 class="text-white mb-1">
-                                    <span class="text-primary me-2">${step.Order}.</span> ${step.CourseName}
+                                    <span class="text-primary me-2">${order}.</span> ${courseName}
                                 </h5>
-                                <span class="badge bg-secondary">${step.CourseType}</span>
+                                <span class="badge bg-secondary">${courseType}</span>
                             </div>
-                            <p class="text-muted-custom small mb-3">Навыки: ${(step.TargetCompetencies || []).join(', ')}</p>
+                            <p class="text-muted-custom small mb-3">Навыки: ${compsText}</p>
                             <div class="justification-block mt-2">
                                 <strong><i class="bi bi-robot"></i> Почему рекомендовано:</strong><br/>
-                                ${step.Justification ?? ''}
+                                ${justification}
                             </div>
                         </div>
                     </div>
                 `;
-                trajectoryTimeline.insertAdjacentHTML('beforeend', stepHtml);
+                timeline.insertAdjacentHTML('beforeend', stepHtml);
             });
-            initTooltips();
+            
+            if (typeof initTooltips === 'function') {
+                initTooltips();
+            }
         }
     });
 </script>
