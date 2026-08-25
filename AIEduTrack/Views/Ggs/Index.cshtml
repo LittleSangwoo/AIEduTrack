@@ -255,13 +255,13 @@
     </div>
 
     <div class="d-flex gap-2 mb-4 flex-wrap">
-        <button class="btn btn-outline-custom btn-sm" onclick="exportTrajectory('excel')">
+        <button class="btn btn-success btn-sm fw-bold text-white shadow-sm" onclick="exportTrajectory('excel')">
             <i class="bi bi-file-earmark-excel"></i> Excel
         </button>
-        <button class="btn btn-outline-custom btn-sm" onclick="exportTrajectory('word')">
+        <button class="btn btn-primary btn-sm fw-bold text-white shadow-sm" onclick="exportTrajectory('word')">
             <i class="bi bi-file-earmark-word"></i> Word
         </button>
-        <button class="btn btn-outline-custom btn-sm" onclick="exportTrajectory('json')">
+        <button class="btn btn-info btn-sm fw-bold text-white shadow-sm" onclick="exportTrajectory('json')">
             <i class="bi bi-filetype-json"></i> JSON
         </button>
     </div>
@@ -451,10 +451,10 @@ employeeIdInput.addEventListener('blur', async function () {
             steps.forEach((step, index) => {
                 const delay = index * 0.2;
                 
-                // Учитываем разницу регистров (camelCase vs PascalCase)
+                // Учитываем разницу регистров
                 const courseName = step.courseName || step.CourseName || 'Без названия';
                 const courseType = step.courseType || step.CourseType || 'ЭК';
-                const shortDescription = step.shortDescription || step.ShortDescription || '';
+                const shortDescription = step.shortDescription || step.ShortDescription || 'Описание отсутствует';
                 const justification = step.justification || step.Justification || '';
                 const order = step.order || step.Order || (index + 1);
                 
@@ -465,14 +465,22 @@ employeeIdInput.addEventListener('blur', async function () {
                 const stepHtml = `
                     <div class="timeline-item" style="animation-delay: ${delay}s">
                         <div class="timeline-marker"></div>
-                        <div class="course-card" data-bs-toggle="tooltip" data-bs-placement="top" title="${shortDescription}">
-                            <div class="d-flex justify-content-between">
-                                <h5 class="text-white mb-1">
+                        <!-- Убрали атрибуты тултипа отсюда -->
+                        <div class="course-card">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <h5 class="text-white mb-0">
                                     <span class="text-primary me-2">${order}.</span> ${courseName}
                                 </h5>
-                                <span class="badge bg-secondary">${courseType}</span>
+                                <span class="badge bg-secondary ms-2 mt-1">${courseType}</span>
                             </div>
-                            <p class="text-muted-custom small mb-3">Навыки: ${compsText}</p>
+                            
+                            <!-- НОВЫЙ БЛОК: Описание курса внутри карточки -->
+                            <div class="mb-3" style="background: rgba(255, 255, 255, 0.03); padding: 12px 14px; border-radius: 8px; border-left: 3px solid var(--accent-bright); font-size: 0.9rem; color: #cbd5e1; line-height: 1.5;">
+                                ${shortDescription}
+                            </div>
+
+                            <p class="text-muted-custom small mb-3"><strong>Навыки:</strong> ${compsText}</p>
+                            
                             <div class="justification-block mt-2">
                                 <strong><i class="bi bi-robot"></i> Почему рекомендовано:</strong><br/>
                                 ${justification}
@@ -483,6 +491,7 @@ employeeIdInput.addEventListener('blur', async function () {
                 timeline.insertAdjacentHTML('beforeend', stepHtml);
             });
             
+            // Тултипы нам больше не нужны, но оставим инициализацию на случай других элементов
             if (typeof initTooltips === 'function') {
                 initTooltips();
             }
