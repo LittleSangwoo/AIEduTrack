@@ -34,8 +34,63 @@ namespace AIEduTrack.Services
         // Старый вход: ищем существующего пользователя по ID (сценарий методиста / сотрудника с историей)
         public async Task<TrajectoryResultDto> GenerateAsync(string userId, string providerType)
         {
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+
+            var llm = _llmFactory.GetClient(providerType);
             var profile = _repository.GetProfile(userId);
-            return await GenerateAsync(profile, providerType);
+            var fullCatalog = _repository.GetAvailableCourses();
+            var allUsers = _repository.GetAllUsers();
+
+            // ====================================================================
+            // МОДУЛЬ 3: ПРЕДОБРАБОТКА (RAG) И ФИЛЬТРАЦИЯ 
+            // Защита от переполнения контекстного окна (ошибка ResponseEnded)
+            // ====================================================================
+
+            // Определяем, является ли сотрудник руководителем
+            bool isManager = profile.Role.Contains("Начальник", StringComparison.OrdinalIgnoreCase) ||
+                             profile.Role.Contains("Руководитель", StringComparison.OrdinalIgnoreCase);
+
+            // Отбираем только релевантные курсы (до 15 штук)
+            var relevantCatalog = fullCatalog
+                .Where(c => isManager
+                    ? (c.Name.Contains("управлен", StringComparison.OrdinalIgnoreCase) || c.Description.Contains("руковод", StringComparison.OrdinalIgnoreCase))
+                    : (!c.Name.Contains("управлен", StringComparison.OrdinalIgnoreCase)))
+                .Take(15) // Жесткий лимит для стабильности API
+                .ToList();
+
+            // Fallback: если фильтр оказался слишком строгим, берем курсы по умолчанию
+            if (relevantCatalog.Count < 5)
+            {
+                relevantCatalog = fullCatalog.Take(15).ToList();
+            }
+
+            // ====================================================================
+
+            // Дальше передаем НЕ fullCatalog, а обрезанный relevantCatalog!
+            var context = await _analyzer.AnalyzeProfileAsync(profile, relevantCatalog, allUsers);
+
+            var draft = await _curator.DraftTrajectoryAsync(context, llm, relevantCatalog);
+            Console.WriteLine($"\n[АГЕНТ-МЕТОДИСТ] Сгенерировал курсов: {draft.Count}");
+
+            // Валидатору отдаем полный каталог, чтобы он мог искать совпадения по всей базе
+            var validSteps = _validator.Validate(draft, profile, fullCatalog);
+            Console.WriteLine($"[АГЕНТ-ВАЛИДАТОР] Оставил после фильтрации: {validSteps.Count}");
+
+            var finalSteps = await _explainer.GenerateJustificationsAsync(validSteps, profile, llm);
+
+            watch.Stop();
+
+            return new TrajectoryResultDto
+            {
+                UserId = profile.Id,
+                UserRole = profile.Role,
+                Department = profile.Department,
+                ModelUsed = llm.ProviderName,
+                ExecutionTimeMs = watch.ElapsedMilliseconds,
+                DraftStepsCount = draft.Count,
+                AlreadyPassedFiltered = draft.Count - validSteps.Count,
+                Steps = finalSteps
+            };
         }
 
         // Новый вход: профиль уже готов (в т.ч. "новый сотрудник" — Role/Department без истории)

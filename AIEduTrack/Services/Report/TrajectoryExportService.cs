@@ -3,6 +3,7 @@ using AIEduTrack.Models.DTOs;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
+using System.Text.Encodings.Web;
 using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace AIEduTrack.Services.Report
@@ -21,7 +22,8 @@ namespace AIEduTrack.Services.Report
             var options = new JsonSerializerOptions
             {
                 WriteIndented = true,
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping // не экранировать кириллицу в \uXXXX
             };
             var json = JsonSerializer.Serialize(trajectory, options);
             return System.Text.Encoding.UTF8.GetBytes(json);

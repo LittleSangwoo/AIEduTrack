@@ -11,9 +11,9 @@
   },
   {
     "Id": "2f598b2f-a25b-4252-844d-293807c346c2",
-    "Name": "ollama local2",
+    "Name": "ollama local1",
     "IsLocal": true,
-    "BaseUrl": "http://ollama-server:11434/v1/chat/completions",
+    "BaseUrl": "http://localhost:11434/v1/chat/completions",
     "ApiKey": "",
     "Model": "llama3",
     "Scope": null,
@@ -24,18 +24,8 @@
     "Name": "ollama local1",
     "IsLocal": true,
     "BaseUrl": "http://localhost:11434/v1/chat/completions",
-    "ApiKey": "",
-    "Model": "llama3",
-    "Scope": null,
-    "AuthType": "OpenAI"
-  },
-  {
-    "Id": "87179d76-753a-42f6-8529-2a989987237f",
-    "Name": "yandexgpt",
-    "IsLocal": false,
-    "BaseUrl": "https://ai.api.cloud.yandex.net/v1/chat/completions",
     "ApiKey": "-",
-    "Model": "gpt://b1g1i2lmp3nsmkf9793r/yandexgpt/latest",
+    "Model": "llama3",
     "Scope": "",
     "AuthType": "OpenAI"
   },
@@ -44,9 +34,19 @@
     "Name": "groq",
     "IsLocal": false,
     "BaseUrl": "https://api.groq.com/openai/v1/chat/completions",
-    "ApiKey": "-",
+    "ApiKey": "",
     "Model": "openai/gpt-oss-120b",
     "Scope": "-",
+    "AuthType": "OpenAI"
+  },
+  {
+    "Id": "87179d76-753a-42f6-8529-2a989987237f",
+    "Name": "yandexgpt",
+    "IsLocal": false,
+    "BaseUrl": "https://ai.api.cloud.yandex.net/v1/chat/completions",
+    "ApiKey": "",
+    "Model": "",
+    "Scope": "",
     "AuthType": "OpenAI"
   }
 ]

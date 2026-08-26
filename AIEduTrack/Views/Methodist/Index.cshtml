@@ -4,117 +4,6 @@
 }
 
 <style>
-    :root {
-        --bg-deep: #0a0e1a;
-        --bg-panel: #141c2e;
-        --bg-panel-2: #1a2338;
-        --bg-input: #1c2740;
-        --border-soft: rgba(148, 163, 184, 0.14);
-        --border-strong: rgba(148, 163, 184, 0.28);
-        --accent: #3b82f6;
-        --accent-bright: #60a5fa;
-        --accent-soft: rgba(59, 130, 246, 0.16);
-        --text-primary: #f1f5f9;
-        --text-secondary: #b6c2d9;
-        --text-tertiary: #8899b3;
-        --success: #22c55e;
-        --radius-lg: 16px;
-        --radius-md: 12px;
-        --radius-sm: 8px;
-    }
-
-    html, body {
-        color-scheme: dark; /* нативные select/input рендерятся в тёмной теме, а не белым на белом */
-    }
-
-    body {
-        background:
-            radial-gradient(circle at 12% 0%, rgba(59, 130, 246, 0.10), transparent 42%),
-            radial-gradient(circle at 88% 8%, rgba(34, 197, 94, 0.06), transparent 40%),
-            var(--bg-deep);
-        color: var(--text-primary);
-        font-family: 'Segoe UI', Inter, Roboto, sans-serif;
-    }
-
-    /* Заголовок страницы */
-    .page-header {
-        margin-bottom: 1.75rem;
-    }
-    .page-header .eyebrow {
-        color: var(--accent-bright);
-        font-size: 0.78rem;
-        font-weight: 600;
-        letter-spacing: 1.5px;
-        text-transform: uppercase;
-    }
-    .page-header h1 {
-        color: var(--text-primary);
-        font-weight: 700;
-        font-size: 1.9rem;
-        margin: 0.25rem 0 0.35rem;
-    }
-    .page-header p {
-        color: var(--text-secondary);
-        margin: 0;
-    }
-
-    /* Карточки: непрозрачный фон с чёткой рамкой — фон и текст больше не сливаются */
-    .glass-panel {
-        background: var(--bg-panel);
-        border: 1px solid var(--border-soft);
-        border-radius: var(--radius-lg);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-    }
-
-    .section-title {
-        color: var(--text-primary);
-        font-weight: 600;
-        font-size: 1.05rem;
-        letter-spacing: 0.3px;
-        display: flex;
-        align-items: center;
-        gap: 0.55rem;
-    }
-    .section-title i {
-        color: var(--accent-bright);
-    }
-
-    /* Единый класс для второстепенного текста — контрастнее дефолтного Bootstrap text-muted на тёмном фоне */
-    .text-muted-custom {
-        color: var(--text-secondary) !important;
-    }
-    .text-faint {
-        color: var(--text-tertiary) !important;
-    }
-
-    .form-label {
-        color: var(--text-secondary);
-        font-size: 0.85rem;
-        font-weight: 600;
-        letter-spacing: 0.2px;
-        margin-bottom: 0.4rem;
-    }
-
-    /* Инпуты и Селекты */
-    .dark-input {
-        background-color: var(--bg-input);
-        border: 1px solid var(--border-strong);
-        color: var(--text-primary);
-        border-radius: var(--radius-sm);
-    }
-    .dark-input::placeholder {
-        color: var(--text-tertiary);
-    }
-    .dark-input:focus {
-        background-color: var(--bg-input);
-        color: #fff;
-        border-color: var(--accent);
-        box-shadow: 0 0 0 0.2rem var(--accent-soft);
-    }
-    .dark-input option {
-        background-color: var(--bg-panel-2);
-        color: var(--text-primary);
-    }
 
     /* Карточка профиля */
     .profile-card {
@@ -304,6 +193,73 @@
         50% { opacity: 1; }
         100% { opacity: 0.6; }
     }
+    /* Toast-уведомление вместо alert() */
+    .toast-notify {
+        position: fixed;
+        top: 24px;
+        right: 24px;
+        z-index: 9999;
+        min-width: 320px;
+        max-width: 420px;
+        background: var(--bg-panel);
+        border: 1px solid var(--border-strong);
+        border-left: 4px solid var(--accent);
+        border-radius: var(--radius-md);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+        padding: 16px 18px;
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        transform: translateX(120%);
+        opacity: 0;
+        transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+        .toast-notify.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .toast-notify.toast-error {
+            border-left-color: #ef4444;
+        }
+
+        .toast-notify .toast-icon {
+            font-size: 1.4rem;
+            flex-shrink: 0;
+            color: var(--success);
+        }
+
+        .toast-notify.toast-error .toast-icon {
+            color: #f87171;
+        }
+
+        .toast-notify .toast-body {
+            flex-grow: 1;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .toast-notify .toast-title {
+            font-weight: 700;
+            margin-bottom: 2px;
+            display: block;
+        }
+
+        .toast-notify .toast-close {
+            cursor: pointer;
+            color: var(--text-tertiary);
+            font-size: 1.1rem;
+            line-height: 1;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+            .toast-notify .toast-close:hover {
+                color: var(--text-primary);
+            }
 </style>
 
 <div class="dark-dashboard container-fluid py-4">
@@ -406,6 +362,17 @@
                     <h4 class="section-title mb-0"><i class="bi bi-map"></i> Индивидуальный маршрут</h4>
                     <span id="generationStatus" class="badge bg-success d-none fade-in">Сгенерировано за 2.4 сек</span>
                 </div>
+                <div id="exportButtons" class="d-flex gap-2 mb-4 flex-wrap d-none">
+                    <button class="export-btn export-btn-excel" onclick="exportTrajectory('excel')">
+                        <i class="bi bi-file-earmark-excel"></i> Excel
+                    </button>
+                    <button class="export-btn export-btn-word" onclick="exportTrajectory('word')">
+                        <i class="bi bi-file-earmark-word"></i> Word
+                    </button>
+                    <button class="export-btn export-btn-json" onclick="exportTrajectory('json')">
+                        <i class="bi bi-filetype-json"></i> JSON
+                    </button>
+                </div>
 
                 <!-- Состояние пустого экрана -->
                 <div id="emptyState" class="text-center py-5 mt-5">
@@ -430,6 +397,29 @@
 </div>
 
                     <script>
+                            function showToast(message, isError = false) {
+        const existing = document.querySelector('.toast-notify');
+        if (existing) existing.remove();
+
+        const toast = document.createElement('div');
+        toast.className = `toast-notify ${isError ? 'toast-error' : ''}`;
+        toast.innerHTML = `
+            <div class="toast-icon"><i class="bi ${isError ? 'bi-x-circle-fill' : 'bi-check-circle-fill'}"></i></div>
+            <div class="toast-body">
+                <span class="toast-title">${isError ? 'Ошибка' : 'Готово'}</span>
+                ${message}
+            </div>
+            <button class="toast-close" onclick="this.parentElement.remove()">&times;</button>
+        `;
+        document.body.appendChild(toast);
+
+        requestAnimationFrame(() => toast.classList.add('show'));
+
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 350);
+        }, 5000);
+    }
     document.addEventListener("DOMContentLoaded", function () {
         const employeeSelect = document.getElementById('employeeSelect');
         const profileCard = document.getElementById('profileCard');
@@ -439,6 +429,42 @@
         const loader = document.getElementById('loader');
         const trajectoryTimeline = document.getElementById('trajectoryTimeline');
         const generationStatus = document.getElementById('generationStatus');
+
+        const exportButtons = document.getElementById('exportButtons');
+        let lastTrajectoryResult = null;
+
+        window.exportTrajectory = async function (format) {
+            if (!lastTrajectoryResult) {
+                showToast('Сначала сформируйте траекторию.', true);
+                return;
+            }
+
+            try {
+                const response = await fetch(`/Ggs/ExportTrajectory?format=${format}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(lastTrajectoryResult)
+                });
+
+                if (!response.ok) throw new Error('Ошибка сервера при формировании файла.');
+
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+
+                const ext = format === 'excel' ? 'xlsx' : format === 'word' ? 'docx' : 'json';
+                a.download = `Траектория_${lastTrajectoryResult.userId}.${ext}`;
+
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url);
+            } catch (err) {
+                showToast('Ошибка при скачивании: ' + err.message, true);
+                console.error(err);
+            }
+        };
 
         // Включение тултипов Bootstrap
         function initTooltips() {
@@ -523,57 +549,91 @@
             .then(response => response.json())
             .then(result => {
                 loader.classList.add('d-none');
-                
-                if (result.success) {
-                    // Выводим реальное время генерации и строим маршрут
-                    generationStatus.innerText = `Сгенерировано за ${result.data.executionTimeMs / 1000} сек`;
-                    renderTrajectory(result.data.steps);
-                    generationStatus.classList.remove('d-none');
-                } else {
-                    alert('Ошибка генерации: ' + result.message);
-                }
+                        if(result.success) {
+                        lastTrajectoryResult = result.data;
+                        generationStatus.innerText = `Сгенерировано за ${result.data.executionTimeMs / 1000} сек`;
+                        renderTrajectory(result.data.steps);
+                        generationStatus.classList.remove('d-none');
+                        exportButtons.classList.remove('d-none');
+                    } else {
+    showToast(friendlyErrorMessage(result.message), true, result.message);
+}
                 
                 generateBtn.disabled = false;
             })
             .catch(error => {
                 loader.classList.add('d-none');
-                alert('Сетевая ошибка при обращении к ИИ.');
+                alert('Сетевая ошибка при обращении к ИИ.' + error.message);
                 generateBtn.disabled = false;
                 console.error(error);
             });
         });
 
+        //ВАЖНО ЭТО УБРАТЬ!!
         // Функция отрисовки шагов маршрута
-        function renderTrajectory(steps) {
-            steps.forEach((step, index) => {
-                // Задержка анимации для каждого шага каскадом
-                const delay = index * 0.2; 
+        // function renderTrajectory(steps) {
+        //     steps.forEach((step, index) => {
+        //         Задержка анимации для каждого шага каскадом
+        //         const delay = index * 0.2; 
                 
-                const stepHtml = `
-                    <div class="timeline-item" style="animation-delay: ${delay}s">
-                        <div class="timeline-marker"></div>
-                        <div class="course-card" data-bs-toggle="tooltip" data-bs-placement="top" 
-                             title="Развиваемые навыки: ${step.TargetCompetencies.join(', ')}">
-                            <div class="d-flex justify-content-between">
-                                <h5 class="text-white mb-1">
-                                    <span class="text-primary me-2">${step.Order}.</span> ${step.CourseName}
-                                </h5>
-                                <span class="badge bg-secondary">${step.CourseType}</span>
-                            </div>
-                            <p class="text-muted-custom small mb-3">${step.ShortDescription}</p>
+        //         const stepHtml = `
+        //             <div class="timeline-item" style="animation-delay: ${delay}s">
+        //                 <div class="timeline-marker"></div>
+        //                 <div class="course-card" data-bs-toggle="tooltip" data-bs-placement="top" 
+        //                      title="Развиваемые навыки: ${step.TargetCompetencies.join(', ')}">
+        //                     <div class="d-flex justify-content-between">
+        //                         <h5 class="text-white mb-1">
+        //                             <span class="text-primary me-2">${step.Order}.</span> ${step.CourseName}
+        //                         </h5>
+        //                         <span class="badge bg-secondary">${step.CourseType}</span>
+        //                     </div>
+        //                     <p class="text-muted-custom small mb-3">${step.ShortDescription}</p>
                             
-                            <div class="justification-block mt-2">
-                                <strong><i class="bi bi-robot"></i> Почему рекомендовано:</strong><br/>
-                                ${step.Justification}
-                            </div>
+        //                     <div class="justification-block mt-2">
+        //                         <strong><i class="bi bi-robot"></i> Почему рекомендовано:</strong><br/>
+        //                         ${step.Justification}
+        //                     </div>
+        //                 </div>
+        //             </div>
+        //         `;
+        //         trajectoryTimeline.insertAdjacentHTML('beforeend', stepHtml);
+        //     });
+            
+        //     trajectoryTimeline.classList.remove('d-none');
+        //     initTooltips(); Активируем тултипы для новых элементов
+        // }
+
+        function renderTrajectory(steps) {
+            const timeline = document.getElementById('trajectoryTimeline');
+            if (!timeline) return;
+            
+            timeline.innerHTML = '';
+            
+            steps.forEach(step => {
+                let compsHtml = '';
+                
+                // БРОНЕБОЙНАЯ ПРОВЕРКА: смотрим, что именно пришло от C#
+                if (Array.isArray(step.targetCompetencies)) {
+                    // Если это настоящий массив - перебираем его
+                    compsHtml = step.targetCompetencies.map(c => `<span class="badge bg-primary me-1">${c}</span>`).join('');
+                } else if (typeof step.targetCompetencies === 'string' && step.targetCompetencies.length > 0) {
+                    // Если это просто строка - выводим как один бейдж
+                    compsHtml = `<span class="badge bg-primary me-1">${step.targetCompetencies}</span>`;
+                }
+
+                timeline.innerHTML += `
+                    <div class="course-card mb-3">
+                        <h5 class="text-white">${step.courseName || 'Без названия'} <span class="badge bg-secondary ms-2" style="font-size:0.7rem;">${step.courseType || 'ЭК'}</span></h5>
+                        <p class="text-muted-custom mb-2">${step.shortDescription || 'Описание отсутствует'}</p>
+                        <div class="mb-2">${compsHtml}</div>
+                        <div class="justification-block mt-3">
+                            🤖 <strong>Обоснование ИИ:</strong> ${step.justification || 'Рекомендовано системой.'}
                         </div>
                     </div>
                 `;
-                trajectoryTimeline.insertAdjacentHTML('beforeend', stepHtml);
             });
             
-            trajectoryTimeline.classList.remove('d-none');
-            initTooltips(); // Активируем тултипы для новых элементов
+            timeline.classList.remove('d-none');
         }
 
         
@@ -611,27 +671,16 @@
                 if (!response.ok) throw new Error('Ошибка сервера при обработке файлов.');
                 return response.json();
             })
-            .then(result => {
-                alert(result.message || 'Готово! Обновите страницу, чтобы увидеть новых сотрудников.');
-                window.location.reload();
-            })
-            .catch(error => {
-                alert('Произошла ошибка при загрузке: ' + error.message);
-                console.error(error);
-                uploadFilesBtn.innerHTML = originalText;
-                uploadFilesBtn.disabled = false;
-            });
+                .then(result => {
+        showToast(result.message || 'Данные обновлены.');
+        setTimeout(() => window.location.reload(), 3500); // даём тосту показаться перед перезагрузкой
+    })
+    .catch(error => {
+        showToast('Ошибка при загрузке: ' + error.message, true);
+        console.error(error);
+        uploadFilesBtn.innerHTML = originalText;
+        uploadFilesBtn.disabled = false;
+    });
         });
     }
-        // Подсветка блока зелёным при выборе файла
-    function bindFileDropHighlight(inputId, dropId) {
-        const input = document.getElementById(inputId);
-        const drop = document.getElementById(dropId);
-        input.addEventListener('change', function () {
-            drop.classList.toggle('file-drop-filled', this.files.length > 0);
-        });
-    }
-    bindFileDropHighlight('historyFile', 'historyDrop');
-    bindFileDropHighlight('catalogFile', 'catalogDrop');
-    bindFileDropHighlight('bookletFile', 'bookletDrop');
 </script>

@@ -3,91 +3,6 @@
 }
 
 <style>
-    :root {
-        --bg-deep: #0a0e1a;
-        --bg-panel: #141c2e;
-        --bg-panel-2: #1a2338;
-        --bg-input: #1c2740;
-        --border-soft: rgba(148, 163, 184, 0.14);
-        --border-strong: rgba(148, 163, 184, 0.28);
-        --accent: #3b82f6;
-        --accent-bright: #60a5fa;
-        --accent-soft: rgba(59, 130, 246, 0.16);
-        --text-primary: #f1f5f9;
-        --text-secondary: #b6c2d9;
-        --text-tertiary: #8899b3;
-        --success: #22c55e;
-        --radius-lg: 16px;
-        --radius-md: 12px;
-        --radius-sm: 8px;
-    }
-
-    html, body { color-scheme: dark; }
-    body {
-        background:
-            radial-gradient(circle at 12% 0%, rgba(59, 130, 246, 0.10), transparent 42%),
-            radial-gradient(circle at 88% 8%, rgba(34, 197, 94, 0.06), transparent 40%),
-            var(--bg-deep);
-        color: var(--text-primary);
-        font-family: 'Segoe UI', Inter, Roboto, sans-serif;
-    }
-
-    .page-header { margin-bottom: 1.75rem; }
-    .page-header .eyebrow {
-        color: var(--accent-bright);
-        font-size: 0.78rem;
-        font-weight: 600;
-        letter-spacing: 1.5px;
-        text-transform: uppercase;
-    }
-    .page-header h1 {
-        color: var(--text-primary);
-        font-weight: 700;
-        font-size: 1.9rem;
-        margin: 0.25rem 0 0.35rem;
-    }
-    .page-header p { color: var(--text-secondary); margin: 0; }
-
-    .glass-panel {
-        background: var(--bg-panel);
-        border: 1px solid var(--border-soft);
-        border-radius: var(--radius-lg);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-    }
-
-    .section-title {
-        color: var(--text-primary);
-        font-weight: 600;
-        font-size: 1.05rem;
-        display: flex;
-        align-items: center;
-        gap: 0.55rem;
-    }
-    .section-title i { color: var(--accent-bright); }
-
-    .text-muted-custom { color: var(--text-secondary) !important; }
-
-    .form-label {
-        color: var(--text-secondary);
-        font-size: 0.85rem;
-        font-weight: 600;
-        margin-bottom: 0.4rem;
-    }
-
-    .dark-input {
-        background-color: var(--bg-input);
-        border: 1px solid var(--border-strong);
-        color: var(--text-primary);
-        border-radius: var(--radius-sm);
-    }
-    .dark-input:focus {
-        background-color: var(--bg-input);
-        color: #fff;
-        border-color: var(--accent);
-        box-shadow: 0 0 0 0.2rem var(--accent-soft);
-    }
-    .dark-input option { background-color: var(--bg-panel-2); color: var(--text-primary); }
-
     .mode-toggle {
         display: flex;
         gap: 8px;
@@ -96,6 +11,7 @@
         padding: 4px;
         border-radius: var(--radius-md);
     }
+
     .mode-btn {
         flex: 1;
         padding: 10px;
@@ -108,11 +24,12 @@
         transition: all 0.2s ease;
         user-select: none;
     }
-    .mode-btn.active {
-        background: var(--accent);
-        color: #fff;
-        box-shadow: 0 0 15px rgba(59, 130, 246, 0.35);
-    }
+
+        .mode-btn.active {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.35);
+        }
 
     .btn-glow {
         background: linear-gradient(90deg, #2563eb, #3b82f6);
@@ -121,35 +38,51 @@
         border-radius: var(--radius-sm);
         transition: all 0.3s ease;
     }
-    .btn-glow:hover:not(:disabled) {
-        box-shadow: 0 0 20px rgba(59, 130, 246, 0.55);
-        transform: translateY(-2px);
-        color: #fff;
-    }
-    .btn-glow:disabled { background: #26314a; color: #64748b; }
 
-    .timeline-container { position: relative; padding-left: 28px; }
-    .timeline-container::before {
-        content: "";
-        position: absolute;
-        left: 9px; top: 6px; bottom: 6px;
-        width: 2px;
-        background: linear-gradient(to bottom, var(--accent), rgba(59, 130, 246, 0.05));
+        .btn-glow:hover:not(:disabled) {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.55);
+            transform: translateY(-2px);
+            color: #fff;
+        }
+
+        .btn-glow:disabled {
+            background: #26314a;
+            color: #64748b;
+        }
+
+    .timeline-container {
+        position: relative;
+        padding-left: 28px;
     }
+
+        .timeline-container::before {
+            content: "";
+            position: absolute;
+            left: 9px;
+            top: 6px;
+            bottom: 6px;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--accent), rgba(59, 130, 246, 0.05));
+        }
+
     .timeline-item {
         position: relative;
         margin-bottom: 1.25rem;
         opacity: 0;
         animation: fadeInRight 0.5s ease forwards;
     }
+
     .timeline-marker {
         position: absolute;
-        left: -28px; top: 18px;
-        width: 12px; height: 12px;
+        left: -28px;
+        top: 18px;
+        width: 12px;
+        height: 12px;
         border-radius: 50%;
         background: var(--accent-bright);
         box-shadow: 0 0 0 4px var(--bg-deep), 0 0 12px rgba(96, 165, 250, 0.7);
     }
+
     .course-card {
         background: var(--bg-panel-2);
         border: 1px solid var(--border-soft);
@@ -157,13 +90,22 @@
         padding: 18px;
         transition: all 0.3s ease;
     }
-    .course-card:hover {
-        border-color: var(--accent-bright);
-        background: #1e2a45;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-    }
-    .course-card h5 { color: var(--text-primary); font-size: 1.05rem; }
-    .course-card p { color: var(--text-secondary); }
+
+        .course-card:hover {
+            border-color: var(--accent-bright);
+            background: #1e2a45;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .course-card h5 {
+            color: var(--text-primary);
+            font-size: 1.05rem;
+        }
+
+        .course-card p {
+            color: var(--text-secondary);
+        }
+
     .justification-block {
         background: rgba(0, 0, 0, 0.25);
         border-left: 3px solid var(--success);
@@ -173,7 +115,10 @@
         color: var(--text-secondary);
         line-height: 1.5;
     }
-    .justification-block strong { color: #6ee7b7; }
+
+        .justification-block strong {
+            color: #6ee7b7;
+        }
 
     #notFoundHint {
         display: none;
@@ -183,12 +128,33 @@
     }
 
     @@keyframes fadeInRight {
-        from { opacity: 0; transform: translateX(20px); }
-        to { opacity: 1; transform: translateX(0); }
+        from {
+            opacity: 0;
+            transform: translateX(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
     }
-    .fade-pulse { animation: pulse 1.5s infinite; }
+
+    .fade-pulse {
+        animation: pulse 1.5s infinite;
+    }
+
     @@keyframes pulse {
-        0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; }
+        0% {
+            opacity: 0.6;
+        }
+
+        50% {
+            opacity: 1;
+        }
+
+        100% {
+            opacity: 0.6;
+        }
     }
 </style>
 
@@ -206,24 +172,39 @@
         </div>
 
         <!-- Режим 1: сотрудник с историей -->
-       <div id="existingForm">
-    <label class="form-label">Ваш ID (например: Пользователь 42)</label>
-    <input type="text" id="employeeId" class="form-control dark-input" placeholder="Пользователь 42" />
-    <div id="notFoundHint">Пользователь с таким ID не найден. Проверьте написание или выберите режим «Я новый сотрудник».</div>
-    <div id="foundHint" class="mt-2" style="display:none; color:#6ee7b7; font-size:0.85rem;"></div>
-</div>
+        <div id="existingForm">
+            <label class="form-label">Ваш ID или ФИО</label>
+            <input type="text" id="employeeId" class="form-control dark-input" placeholder="Например: Пользователь 42 или Иванов Иван Иванович" />
+            <small class="text-muted-custom d-block mt-1" style="font-size: 0.78rem;">
+                Введите так же, как указано в вашем профиле на портале обучения — ID, табельный номер или полное ФИО
+            </small>
+            <div id="notFoundHint">Пользователь с таким ID не найден. Проверьте написание или выберите режим «Я новый сотрудник».</div>
+            <div id="foundHint" class="mt-2" style="display:none; color:#6ee7b7; font-size:0.85rem;"></div>
+        </div>
 
+        <!-- Режим 2: новый сотрудник без истории -->
         <!-- Режим 2: новый сотрудник без истории -->
         <div id="newForm" class="d-none">
             <div class="mb-3">
                 <label class="form-label">Ваша должность</label>
-                <input type="text" id="newRole" class="form-control dark-input" placeholder="Например: Главный специалист" />
+                <select id="newRole" class="form-select dark-input">
+                    <option value="" selected disabled>Выберите должность...</option>
+                </select>
+                <small class="text-muted-custom d-block mt-1" style="font-size: 0.78rem;">
+                    Список составлен из уже загруженных данных — если вашей должности нет, обратитесь к методисту
+                </small>
             </div>
             <div>
                 <label class="form-label">Ваш ИОГВ (ведомство)</label>
-                <input type="text" id="newDepartment" class="form-control dark-input" placeholder="Например: Комитет по информатизации" />
+                <select id="newDepartment" class="form-select dark-input">
+                    <option value="" selected disabled>Выберите ведомство...</option>
+                </select>
             </div>
         </div>
+
+        <!-- Реальные значения должностей/ведомств, переданные из контроллера -->
+        <script id="knownRolesData" type="application/json">@Html.Raw(Json.Serialize(ViewBag.KnownRoles))</script>
+        <script id="knownDepartmentsData" type="application/json">@Html.Raw(Json.Serialize(ViewBag.KnownDepartments))</script>
 
         <div class="mt-3">
             <label class="form-label">ИИ-движок</label>
@@ -249,213 +230,261 @@
     </div>
 
     <div id="resultPanel" class="glass-panel p-4 d-none">
-    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
-        <h4 class="section-title mb-0"><i class="bi bi-map"></i> Ваш маршрут</h4>
-        <span id="generationStatus" class="badge bg-success"></span>
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+            <h4 class="section-title mb-0"><i class="bi bi-map"></i> Ваш маршрут</h4>
+            <span id="generationStatus" class="badge bg-success"></span>
+        </div>
+
+        <div class="d-flex gap-2 mb-4 flex-wrap">
+            <button class="export-btn export-btn-excel" onclick="exportTrajectory('excel')">
+                <i class="bi bi-file-earmark-excel"></i> Excel
+            </button>
+            <button class="export-btn export-btn-word" onclick="exportTrajectory('word')">
+                <i class="bi bi-file-earmark-word"></i> Word
+            </button>
+            <button class="export-btn export-btn-json" onclick="exportTrajectory('json')">
+                <i class="bi bi-filetype-json"></i> JSON
+            </button>
+        </div>
+
+        <div id="trajectoryTimeline" class="timeline-container"></div>
     </div>
 
-    <div class="d-flex gap-2 mb-4 flex-wrap">
-        <button class="btn btn-outline-custom btn-sm" onclick="exportTrajectory('excel')">
-            <i class="bi bi-file-earmark-excel"></i> Excel
-        </button>
-        <button class="btn btn-outline-custom btn-sm" onclick="exportTrajectory('word')">
-            <i class="bi bi-file-earmark-word"></i> Word
-        </button>
-        <button class="btn btn-outline-custom btn-sm" onclick="exportTrajectory('json')">
-            <i class="bi bi-filetype-json"></i> JSON
-        </button>
-    </div>
+    <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const modeExisting = document.getElementById('modeExisting');
+                const modeNew = document.getElementById('modeNew');
+                const existingForm = document.getElementById('existingForm');
+                const newForm = document.getElementById('newForm');
+                const generateBtn = document.getElementById('generateBtn');
+                const loader = document.getElementById('loader');
+                const resultPanel = document.getElementById('resultPanel');
+                const trajectoryTimeline = document.getElementById('trajectoryTimeline');
+                const generationStatus = document.getElementById('generationStatus');
+                const notFoundHint = document.getElementById('notFoundHint');
 
-    <div id="trajectoryTimeline" class="timeline-container"></div>
-</div>
+                // Храним последний сгенерированный результат для скачивания без повторной генерации
+                let lastTrajectoryResult = null;
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const modeExisting = document.getElementById('modeExisting');
-        const modeNew = document.getElementById('modeNew');
-        const existingForm = document.getElementById('existingForm');
-        const newForm = document.getElementById('newForm');
-        const generateBtn = document.getElementById('generateBtn');
-        const loader = document.getElementById('loader');
-        const resultPanel = document.getElementById('resultPanel');
-        const trajectoryTimeline = document.getElementById('trajectoryTimeline');
-        const generationStatus = document.getElementById('generationStatus');
-        const notFoundHint = document.getElementById('notFoundHint');
-        // Храним последний сгенерированный результат для скачивания без повторной генерации
-let lastTrajectoryResult = null;
-
-window.exportTrajectory = async function (format) {
-    if (!lastTrajectoryResult) {
-        alert('Сначала сформируйте траекторию.');
-        return;
-    }
-
-    try {
-        const response = await fetch(`/Ggs/ExportTrajectory?format=${format}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(lastTrajectoryResult)
-        });
-
-        if (!response.ok) throw new Error('Ошибка сервера при формировании файла.');
-
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-
-        const ext = format === 'excel' ? 'xlsx' : format === 'word' ? 'docx' : 'json';
-        a.download = `Траектория_${lastTrajectoryResult.userId}.${ext}`;
-
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        window.URL.revokeObjectURL(url);
-    } catch (err) {
-        alert('Ошибка при скачивании: ' + err.message);
-        console.error(err);
-    }
-};
-
-        let currentMode = 'existing';
-
-        // Проверка ID сразу при вводе (до нажатия основной кнопки)
-const employeeIdInput = document.getElementById('employeeId');
-const foundHint = document.getElementById('foundHint');
-
-employeeIdInput.addEventListener('blur', async function () {
-    const userId = this.value.trim();
-    foundHint.style.display = 'none';
-    notFoundHint.style.display = 'none';
-
-    if (!userId) return;
-
-    try {
-        const response = await fetch('/Ggs/FindMe', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ UserId: userId })
-        });
-        const result = await response.json();
-
-        if (result.found) {
-            foundHint.textContent = `Найдено: ${result.role} · ${result.department}`;
-            foundHint.style.display = 'block';
-        } else {
-            notFoundHint.style.display = 'block';
-        }
-    } catch (err) {
-        console.error('Ошибка проверки ID:', err);
-    }
-});
-
-        window.setMode = function (mode) {
-            currentMode = mode;
-            modeExisting.classList.toggle('active', mode === 'existing');
-            modeNew.classList.toggle('active', mode === 'new');
-            existingForm.classList.toggle('d-none', mode !== 'existing');
-            newForm.classList.toggle('d-none', mode !== 'new');
-            notFoundHint.style.display = 'none';
-        };
-
-        function initTooltips() {
-            var list = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            list.map(el => new bootstrap.Tooltip(el));
-        }
-
-        generateBtn.addEventListener('click', async function () {
-            const provider = document.getElementById('providerSelect').value;
-
-            resultPanel.classList.add('d-none');
-            notFoundHint.style.display = 'none';
-            loader.classList.remove('d-none');
-            generateBtn.disabled = true;
-
-            try {
-                let response;
-
-                if (currentMode === 'existing') {
-                    const userId = document.getElementById('employeeId').value.trim();
-                    if (!userId) {
-                        alert('Введите ваш ID или ФИО.');
-                        loader.classList.add('d-none');
-                        generateBtn.disabled = false;
+                window.exportTrajectory = async function (format) {
+                    if (!lastTrajectoryResult) {
+                        showToast('Сначала сформируйте траекторию.', true);
                         return;
                     }
 
-                    fetch('/Ggs/GetMyTrajectory', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ UserId: userId, LlmProvider: provider })
-                    });
-                } else {
-                    const role = document.getElementById('newRole').value.trim();
-                    const department = document.getElementById('newDepartment').value.trim();
+                    try {
+                        const response = await fetch(`/Ggs/ExportTrajectory?format=${format}`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(lastTrajectoryResult)
+                        });
 
-                    if (!role || !department) {
-                        alert('Заполните должность и ИОГВ.');
+                        if (!response.ok) throw new Error('Ошибка сервера при формировании файла.');
+
+                        const blob = await response.blob();
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+
+                        const ext = format === 'excel' ? 'xlsx' : format === 'word' ? 'docx' : 'json';
+                        a.download = `Траектория_${lastTrajectoryResult.userId}.${ext}`;
+
+                        document.body.appendChild(a);
+                        a.click();
+                        a.remove();
+                        window.URL.revokeObjectURL(url);
+                    } catch (err) {
+                        showToast('Ошибка при скачивании: ' + err.message, true);
+                        console.error(err);
+                    }
+                };
+
+                let currentMode = 'existing';
+                // Заполняем выпадающие списки реальными должностями/ведомствами из загруженных данных
+                const knownRolesRaw = document.getElementById('knownRolesData').textContent;
+                const knownDepartmentsRaw = document.getElementById('knownDepartmentsData').textContent;
+                const knownRoles = knownRolesRaw ? JSON.parse(knownRolesRaw) : [];
+                const knownDepartments = knownDepartmentsRaw ? JSON.parse(knownDepartmentsRaw) : [];
+
+                const newRoleSelect = document.getElementById('newRole');
+                const newDepartmentSelect = document.getElementById('newDepartment');
+
+                knownRoles.forEach(role => {
+                    const opt = document.createElement('option');
+                    opt.value = role;
+                    opt.textContent = role;
+                    newRoleSelect.appendChild(opt);
+                });
+
+                knownDepartments.forEach(dept => {
+                    const opt = document.createElement('option');
+                    opt.value = dept;
+                    opt.textContent = dept;
+                    newDepartmentSelect.appendChild(opt);
+                });
+                // Проверка ID сразу при вводе (до нажатия основной кнопки)
+                const employeeIdInput = document.getElementById('employeeId');
+                const foundHint = document.getElementById('foundHint');
+
+                employeeIdInput.addEventListener('blur', async function () {
+                    const userId = this.value.trim();
+                    foundHint.style.display = 'none';
+                    notFoundHint.style.display = 'none';
+
+                    if (!userId) return;
+
+                    try {
+                        const response = await fetch('/Ggs/FindMe', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ UserId: userId })
+                        });
+                        const result = await response.json();
+
+                        if (result.found) {
+                            foundHint.textContent = `Найдено: ${result.role} · ${result.department}`;
+                            foundHint.style.display = 'block';
+                        } else {
+                            notFoundHint.style.display = 'block';
+                        }
+                    } catch (err) {
+                        console.error('Ошибка проверки ID:', err);
+                    }
+                });
+
+                window.setMode = function (mode) {
+                    currentMode = mode;
+                    modeExisting.classList.toggle('active', mode === 'existing');
+                    modeNew.classList.toggle('active', mode === 'new');
+                    existingForm.classList.toggle('d-none', mode !== 'existing');
+                    newForm.classList.toggle('d-none', mode !== 'new');
+                    notFoundHint.style.display = 'none';
+                };
+
+                function initTooltips() {
+                    var list = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+                    list.map(el => new bootstrap.Tooltip(el));
+                }
+
+                // Нажатие на генерацию
+                generateBtn.addEventListener('click', async function () {
+                    const provider = document.getElementById('providerSelect').value;
+
+                    resultPanel.classList.add('d-none');
+                    notFoundHint.style.display = 'none';
+                    loader.classList.remove('d-none');
+                    generateBtn.disabled = true;
+
+                    try {
+                        let response;
+
+                        if (currentMode === 'existing') {
+                            const userId = document.getElementById('employeeId').value.trim();
+                            if (!userId) {
+                                showToast('Введите ваш ID или ФИО.', true);
+                                loader.classList.add('d-none');
+                                generateBtn.disabled = false;
+                                return;
+                            }
+
+                            response = await fetch('/Ggs/GetMyTrajectory', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ UserId: userId, LlmProvider: provider })
+                            });
+                        } else {
+                            const role = document.getElementById('newRole').value.trim();
+                            const department = document.getElementById('newDepartment').value.trim();
+
+                            if (!role || !department) {
+                                showToast('Заполните должность и ИОГВ.', true);
+                                loader.classList.add('d-none');
+                                generateBtn.disabled = false;
+                                return;
+                            }
+
+                            response = await fetch('/Ggs/GetTrajectoryForNewGgs', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ Role: role, Department: department, LlmProvider: provider })
+                            });
+                        }
+
+                        const result = await response.json();
                         loader.classList.add('d-none');
-                        generateBtn.disabled = false;
-                        return;
+
+                        if (result.success) {
+                            lastTrajectoryResult = result.data;
+
+                            if (typeof generationStatus !== 'undefined' && generationStatus) {
+                                generationStatus.innerText = `Сгенерировано за ${(result.data.executionTimeMs / 1000).toFixed(1)} сек`;
+                            }
+
+                            renderTrajectory(result.data.steps || result.data.Steps || []);
+                            resultPanel.classList.remove('d-none');
+                        } else {
+                            showToast(friendlyErrorMessage(result.message), true, result.message);
+                        }
+                    } catch (err) {
+                        loader.classList.add('d-none');
+                        showToast('Сетевая ошибка: ' + err.message, true);
+                        console.error(err);
                     }
 
-                    response = await fetch('/Ggs/GetTrajectoryForNewGgs', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ Role: role, Department: department, LlmProvider: provider })
+                    generateBtn.disabled = false;
+                });
+
+                // Бронебойная функция отрисовки (понимает любые форматы от C#)
+                function renderTrajectory(steps) {
+                    const timeline = document.getElementById('trajectoryTimeline');
+                    if (!timeline) return;
+
+                    timeline.innerHTML = '';
+
+                    if (!Array.isArray(steps)) return;
+
+                    steps.forEach((step, index) => {
+                        const delay = index * 0.2;
+
+                        const courseName = step.courseName || step.CourseName || 'Без названия';
+                        const courseType = step.courseType || step.CourseType || 'ЭК';
+                        const shortDescription = step.shortDescription || step.ShortDescription || 'Описание отсутствует';
+                        const justification = step.justification || step.Justification || '';
+                        const order = step.order || step.Order || (index + 1);
+
+                        let competencies = step.targetCompetencies || step.TargetCompetencies || [];
+                        let compsText = Array.isArray(competencies) ? competencies.join(', ') : competencies;
+
+                        const stepHtml = `
+                                <div class="timeline-item" style="animation-delay: ${delay}s">
+                                    <div class="timeline-marker"></div>
+                                    <div class="course-card">
+                                        <div class="d-flex justify-content-between align-items-start mb-3">
+                                            <h5 class="text-white mb-0">
+                                                <span class="text-primary me-2">${order}.</span> ${courseName}
+                                            </h5>
+                                            <span class="badge bg-secondary ms-2 mt-1">${courseType}</span>
+                                        </div>
+
+                                        <div class="mb-3" style="background: rgba(255, 255, 255, 0.03); padding: 12px 14px; border-radius: 8px; border-left: 3px solid var(--accent-bright); font-size: 0.9rem; color: #cbd5e1; line-height: 1.5;">
+                                            ${shortDescription}
+                                        </div>
+
+                                        <p class="text-muted-custom small mb-3"><strong>Навыки:</strong> ${compsText}</p>
+
+                                        <div class="justification-block mt-2">
+                                            <strong><i class="bi bi-robot"></i> Почему рекомендовано:</strong><br/>
+                                            ${justification}
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        timeline.insertAdjacentHTML('beforeend', stepHtml);
                     });
-                }
 
-                const result = await response.json();
-                loader.classList.add('d-none');
-
-               if (result.success) {
-                    lastTrajectoryResult = result.data; // сохраняем для последующего экспорта
-                    generationStatus.innerText = `Сгенерировано за ${(result.data.executionTimeMs / 1000).toFixed(1)} сек`;
-                    renderTrajectory(result.data.steps);
-                    resultPanel.classList.remove('d-none');
-                } else {
-                    if (currentMode === 'existing') {
-                        notFoundHint.style.display = 'block';
-                    } else {
-                        alert('Ошибка: ' + result.message);
+                    if (typeof initTooltips === 'function') {
+                        initTooltips();
                     }
                 }
-            } catch (err) {
-                loader.classList.add('d-none');
-                alert('Сетевая ошибка при обращении к серверу.');
-                console.error(err);
-            }
-
-            generateBtn.disabled = false;
-        });
-
-        function renderTrajectory(steps) {
-            trajectoryTimeline.innerHTML = '';
-            steps.forEach((step, index) => {
-                const delay = index * 0.2;
-                const stepHtml = `
-                    <div class="timeline-item" style="animation-delay: ${delay}s">
-                        <div class="timeline-marker"></div>
-                        <div class="course-card" data-bs-toggle="tooltip" data-bs-placement="top"
-                             title="${step.ShortDescription ?? ''}">
-                            <div class="d-flex justify-content-between">
-                                <h5 class="text-white mb-1">
-                                    <span class="text-primary me-2">${step.Order}.</span> ${step.CourseName}
-                                </h5>
-                                <span class="badge bg-secondary">${step.CourseType}</span>
-                            </div>
-                            <p class="text-muted-custom small mb-3">Навыки: ${(step.TargetCompetencies || []).join(', ')}</p>
-                            <div class="justification-block mt-2">
-                                <strong><i class="bi bi-robot"></i> Почему рекомендовано:</strong><br/>
-                                ${step.Justification ?? ''}
-                            </div>
-                        </div>
-                    </div>
-                `;
-                trajectoryTimeline.insertAdjacentHTML('beforeend', stepHtml);
             });
-            initTooltips();
-        }
-    });
-</script>
+    </script>

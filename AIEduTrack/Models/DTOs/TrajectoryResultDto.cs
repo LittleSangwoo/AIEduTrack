@@ -1,4 +1,5 @@
-﻿namespace AIEduTrack.Models.DTOs
+﻿using System.Text.Json.Serialization;
+namespace AIEduTrack.Models.DTOs
 {
     public class TrajectoryResultDto
     {
@@ -10,6 +11,7 @@
 
         // ДОБАВЛЯЕМ МЕТРИКИ ДЛЯ БЕНЧМАРКА:
         public int DraftStepsCount { get; set; } // Сколько шагов придумала LLM
+        [JsonIgnore]
         public int HallucinationsFiltered { get; set; } // Сколько выдумано/не найдено в каталоге
         public int AlreadyPassedFiltered { get; set; } // Сколько отсеяно пройденных
 

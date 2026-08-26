@@ -8,6 +8,12 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/AIEduTrack.styles.css" asp-append-version="true" />
+    <script>
+    (function () {
+        var saved = localStorage.getItem('aiEduTrackTheme') || 'dark';
+        document.documentElement.setAttribute('data-theme', saved);
+    })();
+</script>
 </head>
 
 <body>
@@ -22,7 +28,7 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto gap-2">
+                    <ul class="navbar-nav ms-auto gap-2 align-items-center">
                         @{
                             var controllerName = ViewContext.RouteData.Values["controller"]?.ToString();
                         }
@@ -31,17 +37,12 @@
                         {
                             <li class="nav-item">
                                 <a class="nav-link nav-btn" asp-controller="Methodist" asp-action="Index">
-                                    <i class="bi bi-diagram-3"></i> Конструктор
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link nav-btn" asp-controller="Dashboard" asp-action="Analytics">
-                                    <i class="bi bi-bar-chart-line"></i> Аналитика
+                                    <i class="bi bi-diagram-3"></i> Аналитика
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link nav-btn" asp-controller="Settings" asp-action="Index">
-                                    <i class="bi bi-gear"></i> Настройки
+                                    <i class="bi bi-gear"></i> Шлюзы ИИ
                                 </a>
                             </li>
                         }
@@ -49,11 +50,22 @@
                         @if (controllerName != "Home")
                         {
                             <li class="nav-item">
-                                <a class="nav-link nav-btn" asp-controller="Home" asp-action="Index">
+                                <a class="nav-link switch-role-btn" asp-controller="Home" asp-action="Index">
                                     <i class="bi bi-arrow-left-right"></i> Сменить режим
                                 </a>
                             </li>
                         }
+                        <li class="nav-item">
+                            <button type="button" class="help-btn" data-bs-toggle="modal" data-bs-target="#helpModal" title="О программе">
+                                ?
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button id="themeToggleBtn" class="theme-toggle-btn" type="button" title="Переключить тему">
+                                <i class="bi bi-moon-stars-fill"></i>
+                                <span id="themeToggleLabel">Тёмная</span>
+                            </button>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -65,10 +77,198 @@
             @RenderBody()
         </main>
     </div>
+    <!-- МОДАЛЬНОЕ ОКНО: О ПРОГРАММЕ -->
+    <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-content help-modal-content">
+                <div class="modal-header">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-robot fs-4 text-primary"></i>
+                        <h5 class="modal-title mb-0" id="helpModalLabel">О программе AI-EduTrack</h5>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="help-intro">
+                        AI-EduTrack — система, которая с помощью нескольких ИИ-агентов формирует индивидуальный
+                        план обучения для государственного гражданского служащего (ГГС) на основе его должности,
+                        ведомства и истории прохождения курсов.
+                    </p>
 
+                    <div class="help-role-toggle">
+                        <div class="help-role-btn active" id="helpRoleMethodist" onclick="setHelpRole('methodist')">Я методист</div>
+                        <div class="help-role-btn" id="helpRoleGgs" onclick="setHelpRole('ggs')">Я ГГС</div>
+                    </div>
+
+                    <!-- Раздел для методиста -->
+                    <div id="helpContentMethodist">
+                        <div class="accordion help-accordion" id="helpAccordionMethodist">
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#help-m-upload">
+                                        <i class="bi bi-cloud-arrow-up help-section-icon"></i> Загрузка данных
+                                    </button>
+                                </h2>
+                                <div id="help-m-upload" class="accordion-collapse collapse show" data-bs-parent="#helpAccordionMethodist">
+                                    <div class="accordion-body">
+                                        В разделе «Конструктор» слева есть блок «Обновление данных». Загрузите три файла:
+                                        <ul>
+                                            <li><strong>История обучения ГГС</strong> (.xlsx / .csv) — обязательно;</li>
+                                            <li><strong>Реестр электронных курсов</strong> (.xlsx / .csv) — обязательно;</li>
+                                            <li><strong>Буклет программ ППК</strong> (.pdf) — необязательно, но без него в каталоге будут только электронные курсы (ЭК), без программ повышения квалификации.</li>
+                                        </ul>
+                                        После загрузки список сотрудников и каталог курсов обновятся автоматически.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#help-m-generate">
+                                        <i class="bi bi-diagram-3 help-section-icon"></i> Формирование траектории
+                                    </button>
+                                </h2>
+                                <div id="help-m-generate" class="accordion-collapse collapse" data-bs-parent="#helpAccordionMethodist">
+                                    <div class="accordion-body">
+                                        Выберите сотрудника из списка — появится карточка с его должностью, ведомством
+                                        и уже пройденными курсами. Выберите ИИ-движок (российский, зарубежный или
+                                        локальный) и нажмите «Сформировать траекторию». Система соберёт контекст,
+                                        отправит запрос выбранной нейросети, отфильтрует уже пройденные курсы и
+                                        возможные ошибки модели, и покажет готовый маршрут с обоснованием по каждому курсу.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#help-m-export">
+                                        <i class="bi bi-download help-section-icon"></i> Экспорт результата
+                                    </button>
+                                </h2>
+                                <div id="help-m-export" class="accordion-collapse collapse" data-bs-parent="#helpAccordionMethodist">
+                                    <div class="accordion-body">
+                                        После генерации над маршрутом появятся кнопки Excel / Word / JSON — они
+                                        скачивают сформированную траекторию в выбранном формате для отчётности или
+                                        передачи сотруднику.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#help-m-gateways">
+                                        <i class="bi bi-gear help-section-icon"></i> Шлюзы ИИ
+                                    </button>
+                                </h2>
+                                <div id="help-m-gateways" class="accordion-collapse collapse" data-bs-parent="#helpAccordionMethodist">
+                                    <div class="accordion-body">
+                                        В разделе «Шлюзы ИИ» настраиваются провайдеры нейросетей — можно добавить
+                                        новый, изменить существующий или удалить ненужный. Добавленные провайдеры
+                                        сразу появляются в списке выбора движка на странице «Конструктор».
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Раздел для ГГС -->
+                    <div id="helpContentGgs" class="d-none">
+                        <div class="accordion help-accordion" id="helpAccordionGgs">
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#help-g-existing">
+                                        <i class="bi bi-person-badge help-section-icon"></i> У меня уже есть ID
+                                    </button>
+                                </h2>
+                                <div id="help-g-existing" class="accordion-collapse collapse show" data-bs-parent="#helpAccordionGgs">
+                                    <div class="accordion-body">
+                                        Если ваш профиль уже загружен в систему (например, методист загрузил
+                                        общую историю обучения), введите свой ID в поле «У меня есть ID / ФИО».
+                                        Система сразу подскажет, найден ли профиль, и покажет вашу должность и
+                                        ведомство. Выберите ИИ-движок и нажмите «Получить мою траекторию».
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#help-g-new">
+                                        <i class="bi bi-person-plus help-section-icon"></i> Я новый ГГС
+                                    </button>
+                                </h2>
+                                <div id="help-g-new" class="accordion-collapse collapse" data-bs-parent="#helpAccordionGgs">
+                                    <div class="accordion-body">
+                                        Если вы только пришли на службу и истории обучения у вас ещё нет —
+                                        переключитесь на режим «Я новый ГГС», укажите должность и ведомство (ИОГВ).
+                                        Рекомендации в этом случае строятся на основе опыта коллег с такой же
+                                        должностью в том же ведомстве.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#help-g-result">
+                                        <i class="bi bi-map help-section-icon"></i> Ваш маршрут
+                                    </button>
+                                </h2>
+                                <div id="help-g-result" class="accordion-collapse collapse" data-bs-parent="#helpAccordionGgs">
+                                    <div class="accordion-body">
+                                        Готовая траектория показывается списком курсов по порядку прохождения —
+                                        для каждого указаны тип (ЭК/ППК), описание, развиваемые компетенции и
+                                        объяснение, почему курс рекомендован именно вам. Маршрут можно скачать
+                                        в Excel, Word или JSON кнопками над списком.
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="mt-3 p-3" style="background: var(--accent-soft); border-radius: var(--radius-sm); font-size: 0.85rem; color: var(--text-secondary);">
+                        <i class="bi bi-moon-stars"></i> Переключить тёмную/светлую тему интерфейса можно кнопкой
+                        в правом верхнем углу. Чтобы сменить режим работы (методист / ГГС), используйте кнопку
+                        «Сменить режим» там же.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-help-close" data-bs-dismiss="modal">
+                        Понятно, закрыть
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const btn = document.getElementById('themeToggleBtn');
+            const icon = btn.querySelector('i');
+            const label = document.getElementById('themeToggleLabel');
+            const html = document.documentElement;
+
+            function syncButton() {
+                const isDark = (html.getAttribute('data-theme') || 'dark') === 'dark';
+                icon.className = isDark ? 'bi bi-sun-fill' : 'bi bi-moon-stars-fill';
+                label.innerText = isDark ? 'Светлая' : 'Тёмная';
+            }
+
+            syncButton();
+
+            btn.addEventListener('click', function () {
+                const current = html.getAttribute('data-theme') || 'dark';
+                const next = current === 'dark' ? 'light' : 'dark';
+                html.setAttribute('data-theme', next);
+                localStorage.setItem('aiEduTrackTheme', next);
+                syncButton();
+            });
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

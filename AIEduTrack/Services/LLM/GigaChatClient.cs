@@ -55,22 +55,27 @@ namespace AIEduTrack.Services.LLM
 
         private async Task<string> GetAccessTokenAsync()
         {
-            // GigaChat требует уникальный RqUID для каждого запроса токена
             var rqUid = Guid.NewGuid().ToString();
-
             var request = new HttpRequestMessage(HttpMethod.Post, "https://ngw.devices.sberbank.ru:9443/api/v2/oauth");
+
             request.Headers.Add("RqUID", rqUid);
 
-            // В твоем JSON токен авторизации лежит в поле Scope (Guid)
-            request.Headers.Authorization = new AuthenticationHeaderValue("Basic", _config.Scope);
+            // 1. Очищаем ключ от мусора (пробелы, переносы строк, случайное слово Basic)
+            var cleanKey = _config.ApiKey?.Replace("Basic ", "", StringComparison.OrdinalIgnoreCase).Trim();
+            request.Headers.Authorization = new AuthenticationHeaderValue("Basic", cleanKey);
 
-            request.Content = new FormUrlEncodedContent(new[]
-            {
-                new KeyValuePair<string, string>("scope", "GIGACHAT_API_PERS")
-            });
+            // 2. Делаем отправку scope в точности как в твоем старом проекте
+            var scope = string.IsNullOrWhiteSpace(_config.Scope) ? "GIGACHAT_API_PERS" : _config.Scope.Trim();
+            request.Content = new StringContent($"scope={scope}", Encoding.UTF8, "application/x-www-form-urlencoded");
 
             var response = await _httpClient.SendAsync(request);
-            response.EnsureSuccessStatusCode();
+
+            // 3. Если Сбер снова кинет ошибку, выводим её ЧИТАЕМЫЙ текст, чтобы не гадать вслепую
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorBody = await response.Content.ReadAsStringAsync();
+                throw new HttpRequestException($"Отказ Сбера ({response.StatusCode}): {errorBody}");
+            }
 
             var jsonString = await response.Content.ReadAsStringAsync();
             using var doc = JsonDocument.Parse(jsonString);

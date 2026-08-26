@@ -188,7 +188,11 @@ namespace AIEduTrack.Data
 
         public List<Course> GetAvailableCourses() => _courses;
         public List<UserProfile> GetAllUsers() => _users;
-        public UserProfile GetProfile(string userId) =>
-            _users.FirstOrDefault(u => u.Id == userId) ?? new UserProfile();
+        public UserProfile GetProfile(string userId)
+        {
+            var trimmedId = userId?.Trim() ?? string.Empty;
+            return _users.FirstOrDefault(u => u.Id.Trim().Equals(trimmedId, StringComparison.OrdinalIgnoreCase))
+                ?? new UserProfile();
+        }
     }
-}
+    }

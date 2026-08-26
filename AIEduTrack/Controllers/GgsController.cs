@@ -30,14 +30,33 @@ namespace AIEduTrack.Controllers
         public IActionResult Index()
         {
             ViewBag.Providers = _llmSettings.GetProviders();
+
+            // Уникальные должности и ведомства из уже загруженных данных —
+            // чтобы новый ГГС выбирал из реальных значений, а не вводил текст вручную
+            var allUsers = _dataRepository.GetAllUsers();
+            ViewBag.KnownRoles = allUsers
+                .Select(u => u.Role)
+                .Where(r => !string.IsNullOrWhiteSpace(r))
+                .Distinct()
+                .OrderBy(r => r)
+                .ToList();
+            ViewBag.KnownDepartments = allUsers
+                .Select(u => u.Department)
+                .Where(d => !string.IsNullOrWhiteSpace(d))
+                .Distinct()
+                .OrderBy(d => d)
+                .ToList();
+
             return View();
         }
 
         [HttpPost]
+        [HttpPost]
         public IActionResult FindMe([FromBody] IdRequest request)
         {
+            var trimmedId = request.UserId?.Trim() ?? string.Empty;
             var profile = _dataRepository.GetAllUsers()
-                .FirstOrDefault(u => u.Id.Equals(request.UserId, StringComparison.OrdinalIgnoreCase));
+                .FirstOrDefault(u => u.Id.Trim().Equals(trimmedId, StringComparison.OrdinalIgnoreCase));
 
             if (profile == null)
                 return Json(new { found = false });

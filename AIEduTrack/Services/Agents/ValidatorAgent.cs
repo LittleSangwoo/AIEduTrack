@@ -59,6 +59,10 @@ namespace AIEduTrack.Services.Agents
                     TargetCompetencies = step.TargetCompetencies, // Оставляем навыки, которые выделил ИИ
                     Justification = step.Justification // Пока пустое, его заполнит Агент-Обоснователь
                 });
+
+                validSteps = validSteps
+                    .OrderBy(s => s.CourseType == "ППК" ? 1 : 0) // Сначала ЭК (0), потом ППК (1)
+                    .ToList();
             }
 
             return validSteps;
