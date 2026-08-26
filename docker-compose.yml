@@ -11,7 +11,7 @@ services:
       - ollama-server
     environment:
       - ASPNETCORE_ENVIRONMENT=Development # Development, чтобы жюри видело ошибки
-      - ASPNETCORE_URLS=http://+:8080
+      # - ASPNETCORE_URLS=http://+:8080
 
   ollama-server:
     image: ollama/ollama:latest

@@ -14,4 +14,23 @@
     <PackageReference Include="PdfPig" Version="0.1.16" />
   </ItemGroup>
 
+	<ItemGroup>
+		<None Update="Certificates\russian_trusted_root_ca.cer">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Certificates\russian_trusted_root_ca_gost_2025.cer">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Certificates\russian_trusted_sub_ca.cer">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Certificates\russian_trusted_sub_ca_2024.cer">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Certificates\russian_trusted_sub_ca_gost_2025.cer">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+
 </Project>
