@@ -183,7 +183,6 @@
         </div>
 
         <!-- Режим 2: новый сотрудник без истории -->
-        <!-- Режим 2: новый сотрудник без истории -->
         <div id="newForm" class="d-none">
             <div class="mb-3">
                 <label class="form-label">Ваша должность</label>
@@ -300,6 +299,7 @@
                 };
 
                 let currentMode = 'existing';
+
                 // Заполняем выпадающие списки реальными должностями/ведомствами из загруженных данных
                 const knownRolesRaw = document.getElementById('knownRolesData').textContent;
                 const knownDepartmentsRaw = document.getElementById('knownDepartmentsData').textContent;
@@ -322,6 +322,7 @@
                     opt.textContent = dept;
                     newDepartmentSelect.appendChild(opt);
                 });
+
                 // Проверка ID сразу при вводе (до нажатия основной кнопки)
                 const employeeIdInput = document.getElementById('employeeId');
                 const foundHint = document.getElementById('foundHint');
@@ -456,29 +457,29 @@
                         let compsText = Array.isArray(competencies) ? competencies.join(', ') : competencies;
 
                         const stepHtml = `
-                                <div class="timeline-item" style="animation-delay: ${delay}s">
-                                    <div class="timeline-marker"></div>
-                                    <div class="course-card">
-                                        <div class="d-flex justify-content-between align-items-start mb-3">
-                                            <h5 class="text-white mb-0">
-                                                <span class="text-primary me-2">${order}.</span> ${courseName}
-                                            </h5>
-                                            <span class="badge bg-secondary ms-2 mt-1">${courseType}</span>
-                                        </div>
+                                        <div class="timeline-item" style="animation-delay: ${delay}s">
+                                            <div class="timeline-marker"></div>
+                                            <div class="course-card">
+                                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                                    <h5 class="text-white mb-0">
+                                                        <span class="text-primary me-2">${order}.</span> ${courseName}
+                                                    </h5>
+                                                    <span class="badge bg-secondary ms-2 mt-1">${courseType}</span>
+                                                </div>
 
-                                        <div class="mb-3" style="background: rgba(255, 255, 255, 0.03); padding: 12px 14px; border-radius: 8px; border-left: 3px solid var(--accent-bright); font-size: 0.9rem; color: #cbd5e1; line-height: 1.5;">
-                                            ${shortDescription}
-                                        </div>
+                                                <div class="mb-3" style="background: rgba(255, 255, 255, 0.03); padding: 12px 14px; border-radius: 8px; border-left: 3px solid var(--accent-bright); font-size: 0.9rem; color: #cbd5e1; line-height: 1.5;">
+                                                    ${shortDescription}
+                                                </div>
 
-                                        <p class="text-muted-custom small mb-3"><strong>Навыки:</strong> ${compsText}</p>
+                                                <p class="text-muted-custom small mb-3"><strong>Навыки:</strong> ${compsText}</p>
 
-                                        <div class="justification-block mt-2">
-                                            <strong><i class="bi bi-robot"></i> Почему рекомендовано:</strong><br/>
-                                            ${justification}
+                                                <div class="justification-block mt-2">
+                                                    <strong><i class="bi bi-robot"></i> Почему рекомендовано:</strong><br/>
+                                                    ${justification}
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                            `;
+                                    `;
                         timeline.insertAdjacentHTML('beforeend', stepHtml);
                     });
 
@@ -488,3 +489,4 @@
                 }
             });
     </script>
+</div>
