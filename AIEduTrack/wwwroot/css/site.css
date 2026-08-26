@@ -17,6 +17,7 @@ html[data-theme="dark"] {
     --radius-lg: 16px;
     --radius-md: 12px;
     --radius-sm: 8px;
+    --card-hover-bg: #1e2a45;
 }
 
 html[data-theme="light"] {
@@ -33,6 +34,7 @@ html[data-theme="light"] {
     --text-secondary: #475569;
     --text-tertiary: #64748b;
     --success: #16a34a;
+    --card-hover-bg: #eef2ff;
 }
 
 html, body {
@@ -200,13 +202,14 @@ html[data-theme="light"] .glass-panel {
         color: var(--text-primary);
     }
 
-/* ===== Навбар: стеклянная панель ===== */
 .glass-navbar {
     background: rgba(15, 23, 42, 0.8);
     backdrop-filter: blur(15px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     z-index: 1000;
+    position: sticky;
+    top: 0;
 }
 
 html[data-theme="light"] .glass-navbar {

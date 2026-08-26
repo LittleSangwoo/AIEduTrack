@@ -93,7 +93,7 @@
 
         .course-card:hover {
             border-color: var(--accent-bright);
-            background: #1e2a45;
+            background: var(--card-hover-bg);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
         }
 
@@ -106,8 +106,18 @@
             color: var(--text-secondary);
         }
 
+    .step-description-block {
+        background: var(--bg-panel-2);
+        padding: 12px 14px;
+        border-radius: 8px;
+        border-left: 3px solid var(--accent-bright);
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        line-height: 1.5;
+    }
+
     .justification-block {
-        background: rgba(0, 0, 0, 0.25);
+        background: var(--bg-panel-2);
         border-left: 3px solid var(--success);
         padding: 12px 15px;
         border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
@@ -117,7 +127,7 @@
     }
 
         .justification-block strong {
-            color: #6ee7b7;
+            color: var(--success);
         }
 
     #notFoundHint {
@@ -179,7 +189,7 @@
                 Введите так же, как указано в вашем профиле на портале обучения — ID, табельный номер или полное ФИО
             </small>
             <div id="notFoundHint">Пользователь с таким ID не найден. Проверьте написание или выберите режим «Я новый сотрудник».</div>
-            <div id="foundHint" class="mt-2" style="display:none; color:#6ee7b7; font-size:0.85rem;"></div>
+            <div id="foundHint" class="mt-2" style="display:none; color: var(--success); font-size:0.85rem;"></div>
         </div>
 
         <!-- Режим 2: новый сотрудник без истории -->
@@ -462,14 +472,16 @@
                                             <div class="course-card">
                                                 <div class="d-flex justify-content-between align-items-start mb-3">
                                                     <h5 class="text-white mb-0">
-                                                        <span class="text-primary me-2">${order}.</span> ${courseName}
+                                                                    <h5 class="mb-0">
+                                                                <span style="color: var(--accent-bright);">${order}.</span> ${courseName}
+                                                            </h5>
                                                     </h5>
                                                     <span class="badge bg-secondary ms-2 mt-1">${courseType}</span>
                                                 </div>
 
-                                                <div class="mb-3" style="background: rgba(255, 255, 255, 0.03); padding: 12px 14px; border-radius: 8px; border-left: 3px solid var(--accent-bright); font-size: 0.9rem; color: #cbd5e1; line-height: 1.5;">
-                                                    ${shortDescription}
-                                                </div>
+                                                            <div class="step-description-block mb-3">
+                                                            ${shortDescription}
+                                                        </div>
 
                                                 <p class="text-muted-custom small mb-3"><strong>Навыки:</strong> ${compsText}</p>
 

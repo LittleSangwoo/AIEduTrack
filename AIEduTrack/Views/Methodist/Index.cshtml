@@ -7,7 +7,7 @@
 
     /* Карточка профиля */
     .profile-card {
-        background: linear-gradient(145deg, #1a2338, #101828);
+        background: linear-gradient(145deg, var(--bg-panel-2), var(--bg-panel));
         border: 1px solid var(--border-soft);
         border-left: 4px solid var(--accent);
         border-radius: var(--radius-sm);
@@ -133,7 +133,14 @@
         background: var(--accent-bright);
         box-shadow: 0 0 0 4px var(--bg-deep), 0 0 12px rgba(96, 165, 250, 0.7);
     }
-
+    .profile-card .badge {
+    white-space: normal;
+    word-break: break-word;
+    text-align: left;
+    line-height: 1.4;
+    display: inline-block;
+    max-width: 100%;
+}
     /* Карточки курсов в таймлайне */
     .course-card {
         background: var(--bg-panel-2);
@@ -142,11 +149,12 @@
         padding: 18px;
         transition: all 0.3s ease;
     }
-    .course-card:hover {
-        border-color: var(--accent-bright);
-        background: #1e2a45;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-    }
+
+        .course-card:hover {
+            border-color: var(--accent-bright);
+            background: var(--card-hover-bg);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
     .course-card h5 {
         color: var(--text-primary);
         font-size: 1.05rem;
@@ -154,8 +162,9 @@
     .course-card p {
         color: var(--text-secondary);
     }
+
     .justification-block {
-        background: rgba(0, 0, 0, 0.25);
+        background: var(--bg-panel-2);
         border-left: 3px solid var(--success);
         padding: 12px 15px;
         border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
@@ -163,9 +172,10 @@
         color: var(--text-secondary);
         line-height: 1.5;
     }
-    .justification-block strong {
-        color: #6ee7b7;
-    }
+
+        .justification-block strong {
+            color: var(--success);
+        }
 
     /* Пустое состояние и лоадер */
     #emptyState {
@@ -285,13 +295,13 @@
 
                 <!-- Карточка профиля (скрыта до выбора), заполняется реальными данными из JS -->
                 <div id="profileCard" class="profile-card p-3 d-none">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div class="mb-2">
                         <span id="profileRole" class="badge bg-primary">—</span>
-                        <small id="profileDepartment" class="text-muted-custom">—</small>
+                        <div id="profileDepartment" class="text-muted-custom mt-1" style="font-size: 0.82rem;">—</div>
                     </div>
-                    <p class="mb-1 text-light fw-bold">Пройденные курсы: <span id="passedCount" class="text-muted-custom fw-normal"></span></p>
+                    <p class="mb-1 fw-bold">Пройденные курсы: <span id="passedCount" class="text-muted-custom fw-normal"></span></p>
                     <ul id="passedCoursesList" class="text-muted-custom small ps-3 mb-2" style="max-height: 120px; overflow-y: auto;"></ul>
-                    <p class="mb-1 text-light fw-bold">Не пройдено: <span id="failedCount" class="text-muted-custom fw-normal"></span></p>
+                    <p class="mb-1 fw-bold">Не пройдено: <span id="failedCount" class="text-muted-custom fw-normal"></span></p>
                     <ul id="failedCoursesList" class="text-muted-custom small ps-3 mb-0" style="max-height: 80px; overflow-y: auto;"></ul>
                 </div>
             </div>
@@ -341,7 +351,7 @@
                             <div class="engine-card">
                                 <span class="fs-4">@icon</span>
                                 <div class="ms-3">
-                                    <h6 class="mb-0 text-light fw-bold">@provider.Name</h6>
+                                    <h6 class="mb-0 fw-bold">@provider.Name</h6>
                                     <small class="text-muted-custom">@provider.Model (@provider.AuthType)</small>
                                 </div>
                             </div>
@@ -623,7 +633,7 @@
 
                 timeline.innerHTML += `
                     <div class="course-card mb-3">
-                        <h5 class="text-white">${step.courseName || 'Без названия'} <span class="badge bg-secondary ms-2" style="font-size:0.7rem;">${step.courseType || 'ЭК'}</span></h5>
+                            <h5>${step.courseName || 'Без названия'} <span class="badge bg-secondary ms-2" style="font-size:0.7rem;">${step.courseType || 'ЭК'}</span></h5>
                         <p class="text-muted-custom mb-2">${step.shortDescription || 'Описание отсутствует'}</p>
                         <div class="mb-2">${compsHtml}</div>
                         <div class="justification-block mt-3">

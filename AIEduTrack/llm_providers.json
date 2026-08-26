@@ -24,7 +24,7 @@
     "Name": "groq",
     "IsLocal": false,
     "BaseUrl": "https://api.groq.com/openai/v1/chat/completions",
-    "ApiKey": "-",
+    "ApiKey": "",
     "Model": "openai/gpt-oss-120b",
     "Scope": "-",
     "AuthType": "OpenAI"
